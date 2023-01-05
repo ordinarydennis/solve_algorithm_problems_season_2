@@ -1,23 +1,43 @@
 class Solution {
 public:
 	string removeDuplicateLetters(string s) {
+		int len = s.size();
+		string res = "";
+		unordered_map<char, int> M;
+		unordered_map<char, bool> V;
+		stack<int> S;
 
-		std::set<char> cs;
-
-		string ret;
-
-		for (char c : s)
+		for (auto c : s)
 		{
-			cs.insert(c);
+			if (M.find(c) == M.end()) M[c] = 1;
+			else M[c]++;
 		}
 
-		ret.reserve(cs.size());
+		for (unordered_map<char, int>::iterator iter = M.begin(); iter != M.end(); iter++) 
+			V[iter->first] = false;
 
-		for (char c : cs)
+		cout << M.size() << V.size() << endl;
+
+		for (int i = 0; i < len; i++)
 		{
-			ret.push_back(c);
-		}
+			M[s[i]]--;
 
-		return ret;
+			if (V[s[i]] == true) 
+				continue;
+
+			while (!S.empty() and s[i] < s[S.top()] and M[s[S.top()]] > 0)
+			{
+				V[s[S.top()]] = false;
+				S.pop();
+			}
+
+			S.push(i);
+			V[s[i]] = true;
+		}
+		while (!S.empty()) {
+			res = s[S.top()] + res;
+			S.pop();
+		}
+		return res;
 	}
 };
