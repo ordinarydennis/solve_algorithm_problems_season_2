@@ -2,24 +2,32 @@ class Solution {
 public:
     int maxProduct(vector<string>& words) {
 
-        vector<int> mask(words.size());
+        int mask = 0;
 
-        int result = 0;
+        std::vector<int> masks(words.size());
 
-        for (int i = 0; i < words.size(); ++i) {
 
-            for (char c : words[i])
-                mask[i] |= 1 << (c - 'a');
-
-            for (int j = 0; j < i; ++j)
+        for (int a = 0; a < words.size(); a++)
+        {
+            for (char c : words[a])
             {
-                if (!(mask[i] & mask[j]))
+                masks[a] |= 1 << (c - 'a');
+            }
+        }
+
+        int max = 0;
+
+        for (int a = 0; a < words.size(); a++)
+        {
+            for (int b = 1; b < words.size(); b++)
+            {
+                if (!(masks[a] & masks[b]))
                 {
-                    result = max(result, int(words[i].size() * words[j].size()));
+                    max = std::max(max, (int)(words[a].size() * words[b].size()));
                 }
             }
-                
         }
-        return result;
+
+        return max;
     }
 };
