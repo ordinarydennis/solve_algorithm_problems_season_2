@@ -1,58 +1,33 @@
+//solution : https://leetcode.com/problems/longest-substring-with-at-least-k-repeating-characters/solutions/882149/longest-substring-with-at-least-k-repeating-characters/?orderBy=most_votes
+
 class Solution {
 public:
-    int lengthLongestPath(string input) {
+	int longestSubstring(string s, int k) {
+		int n = s.size();
+		return longestSubstringUtil(s, 0, n, k);
+	}
+	int longestSubstringUtil(string& s, int start, int end, int k) {
 
-        string s;
+		if (end < k) return 0;
 
-        int tCount = 0;
+		int countMap[26] = { 0 };
 
-        std::unordered_map<int, int> m;
+		// update the countMap with the count of each character
+		for (int i = start; i < end; i++)
+			countMap[s[i] - 'a']++;
 
-        int isDir = 1;
+		for (int mid = start; mid < end; mid++) {
 
-        int ret = 0;
+			if (countMap[s[mid] - 'a'] >= k) 
+				continue;
 
-        for (int i = 0; i <= input.size(); i++)
-        {
-            if ('\n' == input[i] || '\0' == input[i])
-            {
-                int size = 0;
+			int midNext = mid + 1;
 
-                if (0 < tCount)
-                {
-                    size = m[tCount - 1] + s.size() + isDir;
-                }
-                else
-                {
-                    size = s.size() + isDir;
-                }
+			while (midNext < end && countMap[s[midNext] - 'a'] < k) 
+				midNext++;
 
-                m[tCount] = size;
-
-                if (0 == isDir)
-                {
-                    ret = max(ret, size);
-                }
-
-                s.clear();
-                tCount = 0;
-                isDir = 1;
-            }
-            else if ('\t' == input[i])
-            {
-                tCount++;
-            }
-            else if ('.' == input[i])
-            {
-                isDir = 0;
-                s += input[i];
-            }
-            else
-            {
-                s += input[i];
-            }
-        }
-
-        return ret;
-    }
+			return max(longestSubstringUtil(s, start, mid, k), longestSubstringUtil(s, midNext, end, k));
+		}
+		return (end - start);
+	}
 };
