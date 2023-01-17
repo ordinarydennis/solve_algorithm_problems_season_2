@@ -1,90 +1,66 @@
 class Solution {
 
-	bool checkNum(const string& num, string& s)
-	{
-		vector<char> charList;
-
-		bool findAll = true;
-
-		for (char c : num)
-		{
-			int i = s.find(c);
-
-			if (string::npos == i)
-			{
-				findAll = false;
-				break;
-			}
-
-			charList.push_back(c);
-		}
-
-		if (findAll)
-		{
-			for (char c : charList)
-			{
-				int i = s.find(c);;
-				s.erase(i, 1);
-			}
-		}
-
-		return findAll;
-	}
-
 public:
 	string originalDigits(string s) {
 
-		string ret;
+		std::vector<int> count(10, 0);
 
-		while (s.size())
+		for (char c : s)
 		{
-			if (checkNum("zero", s))
-			{
-				ret += '0';
-			}
-
-			if (checkNum("one", s))
-			{
-				ret += '1';
-			}
-			if (checkNum("two", s))
-			{
-				ret += '2';
-			}
-			if (checkNum("three", s))
-			{
-				ret += '3';
-			}
-			if (checkNum("four", s))
-			{
-				ret += '4';
-			}
-			if (checkNum("five", s))
-			{
-				ret += '5';
-			}
-			if (checkNum("six", s))
-			{
-				ret += '6';
-
-			}
-			if (checkNum("seven", s))
-			{
-				ret += '7';
-
-			}
-			if (checkNum("eight", s))
-			{
-				ret += '8';
-
-			}
-			if (checkNum("nine", s))
-			{
-				ret += '9';
-			}
+			if ('z' == c)
+				count[0]++;
+			else if ('w' == c)
+				count[2]++;
+			else if('h' == c)
+				count[3]++;
+			else if('u' == c)
+				count[4]++;
+			else if('g' == c)
+				count[8]++;
+			else if('x' == c)
+				count[6]++;
+			else if ('f' == c)
+				count[5]++;
+			else if ('s' == c)
+				count[7]++;
+			else if ('i' == c)
+				count[9]++;
+			else if ('o' == c)
+				count[1]++;
 		}
 
+		count[3] -= count[8];
+		count[5] -= count[4];
+		count[7] -= count[6];
+		count[9] -= count[8] + count[6] + count[5];
+		count[1] -= count[4] + count[2] + count[0];
+
+		string ret;
+
+		for (int i = 0; i < count.size(); i++)
+		{
+			if (count[i] <= 0)
+				continue;
+
+			for (int a = 0; a < count[i]; a++)
+			{
+				ret += i + '0';
+			}
+		}
 
 		return ret;
 	}
 };
+
+//zero z
+//two w
+//four u
+//eight g
+//six x
+
+//three // h count - g count(8)
+//five  // f count - u count(4)
+//seven // s count - x count(6)
+
+//nine // i count - f count(5) - x count(6) - g count(8)
+//one  // one - four - two - zero //o
