@@ -2,62 +2,34 @@ class Solution {
 public:
 	int compress(vector<char>& chars) {
 
-		char prec = chars[0];
+		int index = 0;
+		int wIndex = 0;
 
-		vector<char> chars2;
-
-		int count = 1;
-
-		int ret = 0;
-
-		for (int i = 1; i <= chars.size(); i++)
+		while (index < chars.size())
 		{
-			if (i < chars.size() && prec == chars[i])
+			char prec = chars[index];
+			
+			int count = 0;
+
+			while(index < chars.size() && prec == chars[index])
 			{
 				count++;
+				index++;
 			}
-			else
+			
+			chars[wIndex++] = prec;
+
+			if (1 < count)
 			{
-				chars2.push_back(prec);
+				string cs = std::to_string(count);
 
-				if (1 < count)
+				for (char c : cs)
 				{
-					int count2 = count;
-
-					count = 1;
-
-					vector<char> nlist;
-
-					while (count2)
-					{
-						count++;
-
-						int n = count2 % 10;
-
-						nlist.push_back('0' + n);
-
-						count2 = count2 / 10;
-					}
-
-					std::reverse(nlist.begin(), nlist.end());
-
-					chars2.insert(chars2.end(), nlist.begin(), nlist.end());
+					chars[wIndex++] = c;
 				}
-
-				ret += count;
-
-				if (i < chars.size())
-				{
-					prec = chars[i];
-					count = 1;
-				}
-
 			}
 		}
 
-		chars = std::move(chars2);
-
-		return ret;
-
+		return wIndex;
 	}
 };
