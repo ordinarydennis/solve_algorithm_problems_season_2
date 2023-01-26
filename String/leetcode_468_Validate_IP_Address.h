@@ -1,158 +1,46 @@
+https://leetcode.com/problems/validate-ip-address/solutions/689995/c-regex-solution-4-lines-of-code-time-space-o-1-beats-100/?orderBy=most_votes
 class Solution {
-
-	bool isIPv4(const string& queryIP)
-	{
-		for (char c : queryIP)
-		{
-			if ('.' == c)
-			{
-				return true;
-			}
-
-			if (':' == c)
-			{
-				return false;
-			}
-		}
-
-		return false;
-
-	}
-
-	bool checkIPv4(const string& queryIP)
-	{
-		string s;
-
-		int count = 0;
-
-		for (int i = 0; i <= queryIP.size(); i++)
-		{
-			if (i == queryIP.size() || '.' == queryIP[i])
-			{
-				if ('.' == queryIP[i])
-				{
-					count++;
-				}
-
-				if (s.empty())
-				{
-					return false;
-				}
-
-				if (1 < s.size() && '0' == s[0])
-				{
-					return false;
-				}
-
-				for (char c : s)
-				{
-					if ('a' <= c && c <= 'f' || 'A' <= c && c <= 'F')
-					{
-						return false;
-					}
-				}
-
-				int n = std::atoi(s.c_str());
-
-				if (255 < n)
-				{
-					return false;
-				}
-
-				s.clear();
-			}
-			else
-			{
-				s += queryIP[i];
-				if (3 < s.size())
-				{
-					return false;
-				}
-			}
-		}
-
-		if (3 != count)
-		{
-			return false;
-		}
-
-		return true;
-	}
-
-	bool checkIPv6(const string& queryIP)
-	{
-		string s;
-
-		int count = 0;
-
-		for (int i = 0; i <= queryIP.size(); i++)
-		{
-			if (i == queryIP.size() || ':' == queryIP[i])
-			{
-				if (':' == queryIP[i])
-				{
-					count++;
-				}
-				if (s.empty())
-				{
-					return false;
-				}
-
-				if (4 < s.size())
-				{
-					return false;
-				}
-
-				for (char c : s)
-				{
-					if ('0' <= c && c <= '9' || 'a' <= c && c <= 'f' || 'A' <= c && c <= 'F')
-					{
-						//true;
-					}
-					else
-					{
-						return false;
-					}
-				}
-
-				s.clear();
-			}
-			else
-			{
-				s += queryIP[i];
-				if (4 < s.size())
-				{
-					return false;
-				}
-			}
-		}
-
-		if (7 != count)
-		{
-			return false;
-		}
-
-		return true;
-	}
-
 public:
-	string validIPAddress(string queryIP) {
+	string validIPAddress(string IP) {
+		regex ipv4("(([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])");
+		regex ipv6("((([0-9a-fA-F]){1,4})\\:){7}([0-9a-fA-F]){1,4}");   // create regex object for regulare expression
+		
+		if (regex_match(IP, ipv4)) // match regex expression with given IP string for IPv4
+			return "IPv4";
+		else if (regex_match(IP, ipv6)) // match regex expression with given IP string for IPv6
+			return "IPv6";
+		return "Neither"; // Otherwise return "Neither"
+	}
+};
 
-		if (isIPv4(queryIP))
-		{
-			if (checkIPv4(queryIP))
-			{
-				return "IPv4";
+https://leetcode.com/problems/validate-ip-address/solutions/95552/my-straightforward-c-solution/?orderBy=most_votes
+class Solution {
+public:
+	string validIPAddress(string IP) {
+		istringstream is(IP);
+		string t = "";
+		int cnt = 0;
+		if (IP.find(':') == string::npos) { // Check IPv4
+			while (getline(is, t, '.')) {
+				++cnt;
+				if (cnt > 4 || t.empty() || (t.size() > 1 && t[0] == '0') || t.size() > 3) return "Neither";
+				for (char c : t) {
+					if (c < '0' || c > '9') return "Neither";
+				}
+				int val = stoi(t);
+				if (val < 0 || val > 255) return "Neither";
 			}
+			return (cnt == 4 && IP.back() != '.') ? "IPv4" : "Neither";
 		}
-		else
-		{
-			if (checkIPv6(queryIP))
-			{
-				return "IPv6";
+		else { // Check IPv6
+			while (getline(is, t, ':')) {
+				++cnt;
+				if (cnt > 8 || t.empty() || t.size() > 4) return "Neither";
+				for (char c : t) {
+					if (!(c >= '0' && c <= '9') && !(c >= 'a' && c <= 'f') && !(c >= 'A' && c <= 'F')) return "Neither";
+				}
 			}
+			return (cnt == 8 && IP.back() != ':') ? "IPv6" : "Neither";
 		}
-
-		return "Neither";
 	}
 };
