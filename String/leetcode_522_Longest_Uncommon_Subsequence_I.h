@@ -2,32 +2,32 @@ class Solution {
 public:
 	int findLUSlength(string a, string b) {
 
-		string sLong;
-		string sShort;
+		if (a == b) return -1;
 
-
-		if (a.size() < b.size())
-		{
-			sLong = b;
-			sShort = a;
-		}
-		else
-		{
-			sShort = b;
-			sLong = a;
-		}
-
-		int count = 0;
-
-		for (char c1 : sLong)
-		{
-			if (std::count(sShort.begin(), sShort.end(), c1))
-			{
-				count++;
-			}
-		}
-
-		return (count == sLong.size()) ? -1 : sLong.size() - count;
-
+		return max(a.size(), b.size());
 	}
 };
+
+/*
+* 
+uncommon subsequence means that it is not common sub string between given two strings
+ex)ab, bcd
+
+subsequence of ab
+a, b, ab
+
+subsequence of bcd
+b, c, d, bc, bd, cd, bcd
+
+compare two subsequence
+a		b->uncommon subsequence 1 (a or b)
+b		c->uncommon subsequence 1 (b or c)
+ab		d->uncommon subsequence 2 (ab)
+bc->uncommon subsequence 2 (bc)
+bd->uncommon subsequence 2 (bd)
+cd->uncommon subsequence 2 (bd)
+bcd->uncommon subsequence 3 (bcd)
+
+the largest uncommon subsequence is 3.
+
+*/
