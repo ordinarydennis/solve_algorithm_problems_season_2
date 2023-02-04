@@ -16,39 +16,36 @@ public:
 
 		int ret = 0;
 
-		while (m.size())
+		while (true)
 		{
 			int i = 0;
 
-			for (i = 0; i < target.size(); i++)
+			for (; i < target.size(); i++)
 			{
 				char c = target[i];
 
-				auto it = m.find(c);
-				if (m.end() == it)
+				//because map int default value is 0, if it is zero, it means no characters..
+				if (0 < m[c])
 				{
-					return 0;
+					m[c]--;
 				}
-
-				m[c]--;
-
-				if (0 == m[c])
+				else
 				{
-					if (i < target.size())
-					{
-						return ret;
-					}
-					else
-					{
-						return ++ret;
-					}
+					break;
 				}
 			}
 
-			ret++;
-
+			//If index i does not reach the end of the target string, it means that the target string is not satisfied.
+			if (i == target.size())
+			{
+				ret++;
+			}
+			else
+			{
+				break;
+			}
 		}
-		
+
 		return ret;
 	}
 };
