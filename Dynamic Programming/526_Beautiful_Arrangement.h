@@ -1,49 +1,43 @@
 class Solution {
-
-	int mRet = 0;
-
-	bool check(int n, vector<int>& list)
-	{
-		if (list.size() <= n)
-		{
-			return isBeautiful(list);
-		}
-
-		for (int i = n; i < list.size(); i++)
-		{
-			list.push_back(i);
-
-			if (check(i + 1, list))
-			{
-				mRet++;
-			}
-
-			list.pop_back();
-		}
-
-		return false;
-	}
-
-	bool isBeautiful(vector<int>& list)
-	{
-		for (int i = 1; i < list.size(); i++)
-		{
-			if (list[i] % i != 0 && i % list[i] != 0)
-			{
-				return false;
-			}
-		}
-
-		return true;
-	}
-
 public:
-	int countArrangement(int n) {
+	bool seen[16] = {};
+	int res = 0;
+	int dfs(int n, int pos = 1)
+	{
+		if (pos > n) 
+			return res++;
 
-		vector<int> list(n + 1, 0);
+		for (int i = 1; i <= n; i++)
+		{
+			if (!seen[i] && (i % pos == 0 || pos % i == 0))
+			{
+				// marking i as seen
+				seen[i] = true;
 
-		check(1, list);
+				dfs(n, pos + 1);
 
-		return mRet;
+				// backtracking
+				seen[i] = false;
+			}
+		}
+		return res;
+	}
+
+	int countArrangement(int n)
+	{
+		if (n < 4) 
+			return n;
+
+		return dfs(n);
 	}
 };
+
+//i			1,2,3
+//p[i]		1,2,3
+//p[i]		1,3,2
+//p[i]		2,1,3
+//p[i]		2,3,1
+//p[i]		3,1,2
+//p[i]		3,2,1
+
+//refer to https://leetcode.com/problems/beautiful-arrangement/solutions/1000788/c-backtracking-dfs-bitwise-solutions-compared-and-explained-100-time-95-space/?orderBy=most_votes
