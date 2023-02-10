@@ -43,3 +43,5 @@ public:
 		return max;
 	}
 };
+
+//read solution https://leetcode.com/problems/optimal-division/solutions/127534/optimal-division/?orderBy=most_votes
