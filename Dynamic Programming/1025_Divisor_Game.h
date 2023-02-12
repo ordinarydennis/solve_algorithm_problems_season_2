@@ -1,33 +1,27 @@
 class Solution {
+public:
+    bool divisorGame(int N) {
 
-    bool dp(int n, bool isAlice)
-    {
-        if (n <= 1)
+        vector<bool> dp(N + 1, false);
+        
+        dp[2] = true;
+        
+        for (int i = 3; i <= N; i++)
         {
-            return !isAlice;
-        }
-
-        for (int i = n - 1; 1 <= i; i--)
-        {
-            if (n % i == 0)
+            for (int j = 1; j < i; j++)
             {
-                n -= i;
-
-                if (false == dp(n, !isAlice))
-                {
-                    return false;
-                }
+                if (i % j == 0 && dp[i - j] == false) 
+                    dp[i] = true;
             }
         }
-
-        return true;
-    }
-
-
-public:
-    bool divisorGame(int n) {
-
-        return  dp(n, true);
-
+        return dp[N];
     }
 };
+//dp[i - j] == false means that it is result of the game in next turn.
+//because i - j is value that player take.
+//dp[i - j] == false means that opponents will lose the game in next turn. 
+
+
+//https://leetcode.com/problems/divisor-game/solutions/274608/simple-dp-java-solution/?orderBy=most_votes
+//https://leetcode.com/problems/divisor-game/solutions/1083463/c-dp-solution-with-explanation/?orderBy=most_votes&page=2
+//https://bitwise.tistory.com/475
