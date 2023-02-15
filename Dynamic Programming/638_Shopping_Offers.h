@@ -1,16 +1,42 @@
 class Solution {
 public:
 	int shoppingOffers(vector<int>& price, vector<vector<int>>& special, vector<int>& needs) {
+		int bestPrice = calculateWOOffers(price, needs);
+		for (const auto& sp : special) {
+			substractOffer(sp, needs);
+			if (noNegatives(needs)) {
+				int withOffer = sp.back() + shoppingOffers(price, special, needs);
+				bestPrice = min(bestPrice, withOffer);
+			}
+			addOffer(sp, needs);
+		}
 
+		return bestPrice;
+	}
+
+	int calculateWOOffers(const vector<int>& price, const vector<int>& needs) {
+		int totalPrice{ 0 };
+		for (size_t i = 0; i < price.size(); ++i)
+			totalPrice += price[i] * needs[i];
+		return totalPrice;
+	}
+
+	void substractOffer(const vector<int>& special, vector<int>& needs) {
+		for (size_t i = 0; i < needs.size(); ++i)
+			needs[i] -= special[i];
+	}
+
+	void addOffer(const vector<int>& special, vector<int>& needs) {
+		for (size_t i = 0; i < needs.size(); ++i)
+			needs[i] += special[i];
+	}
+
+	bool noNegatives(const vector<int>& needs) {
+		for (int n : needs)
+			if (n < 0)
+				return false;
+		return true;
 	}
 };
 
-
-
-Input: price = [2, 5], special = [[3, 0, 5], [1, 2, 10]], needs = [3, 2]
-
-Output : 14
-Explanation : There are two kinds of items, Aand B.Their prices are $2and $5 respectively.
-In special offer 1, you can pay $5 for 3A and 0B
-In special offer 2, you can pay $10 for 1A and 2B.
-You need to buy 3A and 2B, so you may pay $10 for 1A and 2B(special offer #2), and $4 for 2A.
+//solution : https://leetcode.com/problems/shopping-offers/solutions/992433/c-recursion-clean-code/
