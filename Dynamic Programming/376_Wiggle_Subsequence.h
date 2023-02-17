@@ -1,10 +1,28 @@
 class Solution {
+
+	int calculate(vector<int>& nums, int index, bool isUp)
+	{
+		int maxcount = 0;
+
+		for (int i = index + 1; i < nums.size(); i++)
+		{
+			if ((isUp && nums[i] > nums[index]) || (!isUp && nums[i] < nums[index]))
+			{
+				maxcount = std::max(maxcount, 1 + calculate(nums, i, !isUp));
+			}
+
+		}
+		return maxcount;
+	}
+
 public:
 	int wiggleMaxLength(vector<int>& nums) {
 
+		if (nums.size() < 2)
+			return nums.size();
 
 
-
+		return 1 + std::max(calculate(nums, 0, true), calculate(nums, 0, false));
 	}
 };
 
