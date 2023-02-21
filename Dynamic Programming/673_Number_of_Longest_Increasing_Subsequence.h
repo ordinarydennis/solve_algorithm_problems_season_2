@@ -1,68 +1,41 @@
 class Solution {
-
-	std::unordered_map<int, int> memo;
-
-	int totlaMax = 0;
-
-	int dfs(vector<int>& nums, int index)
-	{
-		if (index <= nums.size())
-		{
-			memo[index] = 0;
-			return 0;
-		}
-
-		if (memo[index])
-		{
-			return memo[index];
-		}
-
-		int max = 0;
-
-		int pre = nums[index];
-
-		for (int i = index + 1; i < nums.size(); i++)
-		{
-			if (nums[i] < pre)
-			{
-				continue;
-			}
-
-			int m = 1 + dfs(nums, i);
-
-			if (max < m)
-			{
-				memo[i] = m;
-				max = m;
-				totlaMax = std::max(totlaMax, max);
-			}
-
-			pre = nums[i];
-
-		}
-
-		return max;
-	}
-
 public:
 	int findNumberOfLIS(vector<int>& nums) {
 
+		int n = nums.size(), maxlen = 1, ans = 0;
 
-		dfs(nums, 0);
+		vector<int> cnt(n, 1), len(n, 1);
 
-		int ret = 0;
-
-		for (const auto [i, count] : memo)
+		for (int i = 1; i < n; i++)
 		{
-			if (totlaMax == count)
+			for (int j = 0; j < i; j++)
 			{
-				ret++;
+				if (nums[i] > nums[j])
+				{
+					if (len[j] + 1 > len[i])
+					{
+						len[i] = len[j] + 1;
+						cnt[i] = cnt[j];
+					}
+					else if (len[j] + 1 == len[i])
+					{
+						cnt[i] += cnt[j];
+					}
+				}
 			}
+			maxlen = max(maxlen, len[i]);
+		}
+		// find the longest increasing subsequence of the whole sequence
+	   // sum valid counts
+		for (int i = 0; i < n; i++)
+		{
+			if (len[i] == maxlen)
+				ans += cnt[i];
 		}
 
-		return  ret++;
 
+		return ans;
 	}
 };
 
-[1, 3, 5, 4, 7]
+//solution : https://leetcode.com/problems/number-of-longest-increasing-subsequence/solutions/1230468/c-clean-dp-solution-easy-and-explained/
