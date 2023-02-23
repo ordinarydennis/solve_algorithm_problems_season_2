@@ -1,42 +1,23 @@
-/**
- * Definition for a binary tree node.
- * struct TreeNode {
- *     int val;
- *     TreeNode *left;
- *     TreeNode *right;
- *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
- *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
- *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
- * };
- */
 class Solution {
 
-    int sum = 0;
+	int dfs(TreeNode* root, bool isLeft) {
 
-    bool dfs(TreeNode* node, bool isLeft)
-    {
-		if (nullptr == node)
-		{
-            return true;
-        }
+		if (!root) 
+			return 0;
 
-        if (dfs(node->left, true))
-        {
-            if(isLeft)
-                sum += node->val;
-        }
+		if (!root->left && !root->right)
+			return isLeft ? root->val : 0;
 
-        dfs(node->right, false);
-
-        return false;
-    }
+		return dfs(root->left, true) + dfs(root->right, false);
+	}
 
 
 public:
-    int sumOfLeftLeaves(TreeNode* root) {
+	int sumOfLeftLeaves(TreeNode* root) {
 
-        dfs(root, false);
+		return dfs(root, false);
 
-        return sum;
 	}
 };
+
+//https://leetcode.com/problems/sum-of-left-leaves/solutions/1558055/c-python-recursive-iterative-dfs-bfs-morris-traversal-o-1-w-explanation-beats-100/?orderBy=most_votes
