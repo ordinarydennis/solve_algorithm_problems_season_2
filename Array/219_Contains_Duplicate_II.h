@@ -2,7 +2,7 @@ class Solution {
 public:
     bool containsNearbyDuplicate(vector<int>& nums, int k) {
 
-        unordered_map<int, int> m;
+        std::unordered_map<int, int> m;
 
         for (int i = 0; i < nums.size(); i++)
         {
@@ -12,14 +12,18 @@ public:
                 {
                     return true;
                 }
+                else
+                {
+                    m[nums[i]] = i;
+                }
+            }
+            else
+            {
+                m.insert({ nums[i], i });
             }
 
-            m[nums[i]] = i;
         }
 
         return false;
     }
 };
-
-
-//https://leetcode.com/problems/contains-duplicate-ii/solutions/2727290/c-easy-detailed-explaination-optimized/?orderBy=most_votes

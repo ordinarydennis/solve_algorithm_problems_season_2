@@ -1,41 +1,40 @@
 class Solution {
+
 public:
 	int findNumberOfLIS(vector<int>& nums) {
 
-		int n = nums.size(), maxlen = 1, ans = 0;
+		int n = nums.size(), res = 0, max_len = 0;
 
-		vector<int> cnt(n, 1), len(n, 1);
+		vector<pair<int, int>> dp(n, { 1, 1 });            //dp[i]: {length, number of LIS which ends with nums[i]}
 
-		for (int i = 1; i < n; i++)
+		for (int i = 0; i < n; i++)
 		{
 			for (int j = 0; j < i; j++)
 			{
-				if (nums[i] > nums[j])
+				if (nums[j] < nums[i])
 				{
-					if (len[j] + 1 > len[i])
-					{
-						len[i] = len[j] + 1;
-						cnt[i] = cnt[j];
-					}
-					else if (len[j] + 1 == len[i])
-					{
-						cnt[i] += cnt[j];
-					}
+					if (dp[i].first == dp[j].first + 1)
+						dp[i].second += dp[j].second;
+
+					if (dp[i].first < dp[j].first + 1)
+						dp[i] = { dp[j].first + 1, dp[j].second };
 				}
 			}
-			maxlen = max(maxlen, len[i]);
-		}
-		// find the longest increasing subsequence of the whole sequence
-	   // sum valid counts
-		for (int i = 0; i < n; i++)
-		{
-			if (len[i] == maxlen)
-				ans += cnt[i];
+
+			if (max_len == dp[i].first)
+				res += dp[i].second;
+
+			if (max_len < dp[i].first)
+			{
+				max_len = dp[i].first;
+				res = dp[i].second;
+			}
 		}
 
-
-		return ans;
+		return res; 
 	}
 };
 
-//solution : https://leetcode.com/problems/number-of-longest-increasing-subsequence/solutions/1230468/c-clean-dp-solution-easy-and-explained/
+[1, 3, 5, 4, 7]
+
+//https://leetcode.com/problems/number-of-longest-increasing-subsequence/solutions/1230468/c-clean-dp-solution-easy-and-explained/?orderBy=most_votes
