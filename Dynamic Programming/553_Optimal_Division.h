@@ -1,47 +1,34 @@
+// This code is using 2nd Approach.
 class Solution {
-
-	vector<bool> checks;
-
-	string max = 0.f;
-
-	void calc(vector<int>& nums, int pos, float f)
-	{
-		if (nums.size() < pos)
-		{
-			max = std::max(max, f);
-			return;
-		}
-
-		for (int i = 0; i < nums.size(); i++)
-		{
-			if (false == checks[i])
-			{
-				checks[i] = true;
-
-				if (0 == f)
-				{
-					calc(nums, pos + 1, nums[i]);
-				}
-				else
-				{
-					calc(nums, pos + 1, f / nums[i]);
-				}
-
-				checks[i] = false;
-			}
-		}
-
-	}
-
 public:
-	string optimalDivision(vector<int>& nums) {
+    string optimalDivision(vector<int>& nums) {
+        int n = nums.size();
+        string ans;
 
-		checks.resize(nums.size());
+        // check for size if its 1 then we can't use parantheses and 
+        // if its 2 then also we should not use it.
 
-		calc(nums, 0, 0.f);
+        if (n == 1) return ans = to_string(nums[0]);
+        if (n == 2) return ans = to_string(nums[0]) + "/" + to_string(nums[1]);
 
-		return max;
-	}
+        //  for size greater than 2 add paranthese after first number 
+
+        ans = to_string(nums[0]);
+        ans.append("/(");
+        for (int i = 1; i < n - 1; i++) {
+            ans.append(to_string(nums[i]) + "/");
+        }
+        ans.append(to_string(nums[n - 1]));
+        ans.append(")");
+
+        // finally this becomes as a/(b/c/d/....) which is our answer
+
+        return ans;
+    }
 };
 
-//read solution https://leetcode.com/problems/optimal-division/solutions/127534/optimal-division/?orderBy=most_votes
+//https://leetcode.com/problems/optimal-division/solutions/1306765/c-effective-approach-easy-maths-solution-proper-explanation-faster-than-100/?orderBy=most_votes
+
+
+//solve this problem as this solution
+//https://leetcode.com/problems/optimal-division/solutions/101684/brute-force-with-memory-in-case-of-your-interviewer-forbid-tricky-solution/?orderBy=most_votes
