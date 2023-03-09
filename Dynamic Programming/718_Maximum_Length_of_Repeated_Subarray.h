@@ -1,43 +1,32 @@
-class Solution {
+class Solution { // 344 ms, faster than 21.07%
 public:
 	int findLength(vector<int>& nums1, vector<int>& nums2) {
 
-		vector<int>& first = nums1;
-		vector<int>& second = nums2;
-
-		if (nums2.size() < nums1.size())
+		int m = nums1.size(), n = nums2.size();
+		
+		vector<vector<int>> dp(m + 1, vector<int>(n + 1));
+		
+		int ans = 0;
+		
+		for (int i = 1; i <= m; ++i)
 		{
-			first = nums2;
-			second = nums1;
-		}
-
-		int ret = 0;
-
-		for (int a = 0; a < first.size(); a++)
-		{
-			for (int b = 0; b < second.size(); b++)
+			for (int j = 1; j <= n; ++j)
 			{
-				if (first[a] != second[b])
+				//save same count to next index.
+				if (nums1[i - 1] == nums2[j - 1])
 				{
-					continue;
+					dp[i][j] = dp[i - 1][j - 1] + 1;
 				}
-
-				int count = 0;
-
-				int aa = a;
-				int bb = b;
-
-				while (bb < second.size() && aa < first.size() && first[aa] == second[bb])
-				{
-					count++;
-					aa++;
-					bb++;
-				}
-
-				ret = std::max(ret, count);
+				else 
+					dp[i][j] = 0;
+				
+				ans = max(ans, dp[i][j]);
 			}
 		}
 
-		return ret;
+		return ans;
 	}
 };
+
+
+//https://leetcode.com/problems/maximum-length-of-repeated-subarray/solutions/1324248/c-python-dp-kmp-hashing-solutions-clean-concise-o-nlogn/?orderBy=most_votes
