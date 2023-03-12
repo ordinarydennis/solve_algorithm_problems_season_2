@@ -11,42 +11,38 @@
  */
 class Solution {
 
-	int treveralRight(TreeNode* root)
+	int lastVal = -1;
+	int min = INT_MAX;
+
+	void traveral(TreeNode* root)
 	{
 		if (nullptr == root)
 		{
-			return -100000;
+			return;
 		}
 
-		if (nullptr == root->right)
+		traveral(root->left);
+
+		if (0 <= lastVal)
 		{
-			return root->val;
+			min = std::min(min, root->val - lastVal);
 		}
 
-		return treveralRight(root->right);
+		lastVal = root->val;
+
+		traveral(root->right);
 	}
 
-	int treveralLeft(TreeNode* root)
-	{
-		if (nullptr == root)
-		{
-			return 100000;
-		}
-
-		if (nullptr == root->left)
-		{
-			return root->val;
-		}
-
-		return treveralRight(root->left);
-	}
 
 public:
 	int getMinimumDifference(TreeNode* root) {
 
-		int left = treveralRight(root->left);
-		int right = treveralLeft(root->right);
+		traveral(root);
 
-		return std::min(right - root->val, root->val - left);
+		return min;
+
 	}
 };
+
+//In-order traversal of BST yields sorted sequence. 
+//https://leetcode.com/problems/minimum-absolute-difference-in-bst/solutions/99938/c-o-n-o-h/?orderBy=most_votes
