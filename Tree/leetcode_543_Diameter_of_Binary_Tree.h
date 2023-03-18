@@ -11,24 +11,30 @@
  */
 class Solution {
 
+    int max = 0;
+
     int treversal(TreeNode* root)
     {
-		if (nullptr == root)
-		{
-			return 0;
-		}
+        if (nullptr == root)
+        {
+            return 0;
+        }
 
-        int max = std::max(
-            treversal(root->left),
-            treversal(root->right)
-        );
-        return max + 1;
+        int l = treversal(root->left);
+        int r = treversal(root->right);
+
+        max = std::max(max, l + r);
+
+        return std::max(r, l) + 1;
     }
 
 public:
     int diameterOfBinaryTree(TreeNode* root) {
 
-        return treversal(root->left) + treversal(root->right);
+        treversal(root);
 
+        return max;
     }
 };
+
+//https://leetcode.com/problems/diameter-of-binary-tree/solutions/573591/c-5-lines-o-n-solution/
