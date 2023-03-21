@@ -1,63 +1,39 @@
 class Solution {
-public:
-	bool isAdditiveNumber(string num) {
 
-		for (int i = 1; i <= num.size() / 2; i++)
+	void check(const string& num, int begin, int end, int sum, int count)
+	{
+
+		for (int i = 1, i < num.size(); i++)
 		{
-			for (int j = 1; j <= (num.size() - i) / 2; j++)
+			string s = num.substr(begin, i);
+			
+			int n = std::stoi(s);
+
+			if (2 == count)
 			{
-				if (check(num.substr(0, i), num.substr(i, j), num.substr(i + j))) 
-					return true;
+				if (sum == n)
+				{
+					check(num, begin + 1, end, sum + n, count + 1);
+				}
+				else
+				{
+
+				}
+			}
+			else
+			{
+				check(num, begin + 1, end, sum + n, count + 1);
 			}
 		}
 
-		return false;
-
 	}
-	bool check(string num1, string num2, string num)
-	{
-		if (num1.size() > 1 && num1[0] == '0' || num2.size() > 1 && num2[0] == '0')
-			return false;
 
-		string sum = add(num1, num2);
+public:
+	bool isAdditiveNumber(string num) {
 
-		if (num == sum) 
-			return true;
 
-		if (num.size() <= sum.size() || sum.compare(num.substr(0, sum.size())) != 0)
-			return false;
-		else 
-			return check(num2, sum, num.substr(sum.size()));
-	}
-	string add(string n, string m)
-	{
-		string res;
+		return check(num, 0, num.size(), 0, 0);
 
-		int i = n.size() - 1;
-		int j = m.size() - 1;
 
-		int carry = 0;
-
-		while (i >= 0 || j >= 0)
-		{
-			int num1 = (i >= 0 ? (n[i] - '0') : 0);
-			int num2 = (j >= 0 ? (m[j] - '0') : 0);
-
-			int sum = carry + num1 + num2;
-
-			res.push_back(sum % 10 + '0');
-
-			carry = sum / 10;
-
-			i--;
-			j--;
-		}
-
-		if (carry)
-			res.push_back(carry + '0');
-
-		reverse(res.begin(), res.end());
-
-		return res;
 	}
 };
