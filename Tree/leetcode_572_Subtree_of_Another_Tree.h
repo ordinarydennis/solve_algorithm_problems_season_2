@@ -11,18 +11,40 @@
  */
 class Solution {
 
-    bool traversal(TreeNode* root, TreeNode* subRoot, bool ischecking)
-    {
-		traversal(root->left, subRoot);
-		traversal(root->right, subRoot);
-    }
+	bool isSame(TreeNode* root, TreeNode* subRoot)
+	{
+		if (nullptr == root || nullptr == subRoot)
+		{
+			return false;
+		}
 
+		if (nullptr == root && nullptr == subRoot)
+		{
+			return true;
+		}
+
+		if (root->val != subRoot->val)
+		{
+			return false;
+		}
+		
+		return isSame(root->left, subRoot->left) && isSame(root->right, subRoot->right);
+	}
 
 
 public:
-    bool isSubtree(TreeNode* root, TreeNode* subRoot) {
+	bool isSubtree(TreeNode* root, TreeNode* subRoot) {
 
-        return traversal(root, subRoot);
+		if (nullptr == root || nullptr == subRoot)
+		{
+			return false;
+		}
 
-    }
+		if (isSame(root, subRoot))
+		{
+			return true;
+		}
+
+		return isSubtree(root->left, subRoot) || isSubtree(root->right, subRoot);
+	}
 };
