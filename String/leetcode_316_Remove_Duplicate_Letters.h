@@ -1,43 +1,44 @@
 class Solution {
 public:
-	string removeDuplicateLetters(string s) {
-		int len = s.size();
-		string res = "";
-		unordered_map<char, int> M;
-		unordered_map<char, bool> V;
-		stack<int> S;
+    string removeDuplicateLetters(string s) {
 
-		for (auto c : s)
-		{
-			if (M.find(c) == M.end()) M[c] = 1;
-			else M[c]++;
-		}
+        vector<int> lastIndex(26, 0);
 
-		for (unordered_map<char, int>::iterator iter = M.begin(); iter != M.end(); iter++) 
-			V[iter->first] = false;
+        for (int i = 0; i < s.length(); i++) {
+            lastIndex[s[i] - 'a'] = i; // track the lastIndex of character presence
+        }
 
-		cout << M.size() << V.size() << endl;
+        vector<bool> seen(26, false); // keep track seen
+        
+        stack<char> st;
 
-		for (int i = 0; i < len; i++)
-		{
-			M[s[i]]--;
+        for (int i = 0; i < s.size(); i++)
+        {
+            int curr = s[i] - 'a';
 
-			if (V[s[i]] == true) 
-				continue;
+            if (seen[curr])
+                continue; // if seen continue as we need to pick one char only
 
-			while (!S.empty() and s[i] < s[S.top()] and M[s[S.top()]] > 0)
-			{
-				V[s[S.top()]] = false;
-				S.pop();
-			}
+            while (st.size() > 0 && st.top() > s[i] && i < lastIndex[st.top() - 'a'])
+            {
+                seen[st.top() - 'a'] = false; // pop out and mark unseen
+                st.pop();
+            }
+            st.push(s[i]); // add into stack
+            seen[curr] = true; // mark seen
+        }
 
-			S.push(i);
-			V[s[i]] = true;
-		}
-		while (!S.empty()) {
-			res = s[S.top()] + res;
-			S.pop();
-		}
-		return res;
-	}
+        string ans = "";
+
+        while (st.size() > 0) {
+            ans += st.top();
+            st.pop();
+        }
+
+        reverse(ans.begin(), ans.end());
+
+        return ans;
+    }
 };
+
+//https://leetcode.com/problems/remove-duplicate-letters/solutions/1859410/java-c-detailed-visually-explained/
