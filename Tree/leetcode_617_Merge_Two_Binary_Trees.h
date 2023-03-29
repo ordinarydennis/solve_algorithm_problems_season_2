@@ -11,38 +11,30 @@
  */
 class Solution {
 
-    void mergeTree(TreeNode* root1, TreeNode* root2, TreeNode* merged)
-    {
-        if (nullptr == root1 && nullptr == root2)
-        {
-            return;
-        }
-
-        merged = new TreeNode();
-        merged->val += nullptr != root1 ? root1->val : 0;
-        merged->val += nullptr != root2 ? root2->val : 0;
-
-		mergeTree(
-            root1 != nullptr ? root1->left : nullptr, 
-            root2 != nullptr ? root2->left : nullptr, 
-            merged->left
-        );
-
-		mergeTree(
-            root1 != nullptr ? root1->right : nullptr, 
-            root2 != nullptr ? root2->right : nullptr, 
-            merged->right
-        );
-    }
-
 public:
     TreeNode* mergeTrees(TreeNode* root1, TreeNode* root2) {
 
-        TreeNode* merged = nullptr;
+		if (nullptr == root1 && nullptr == root2)
+		{
+			return nullptr;
+		}
 
-        mergeTree(root1, root2, merged);
+		TreeNode* merged = new TreeNode();
+		merged->val += nullptr != root1 ? root1->val : 0;
+		merged->val += nullptr != root2 ? root2->val : 0;
+
+		merged->left = mergeTrees(
+			root1 != nullptr ? root1->left : nullptr,
+			root2 != nullptr ? root2->left : nullptr
+		);
+
+		merged->right = mergeTrees(
+			root1 != nullptr ? root1->right : nullptr,
+			root2 != nullptr ? root2->right : nullptr
+		);
 
         return merged;
     }
 };
 
+//https://leetcode.com/problems/merge-two-binary-trees/solutions/104308/java-c-clean-code-unique-node-shared-node-5-liner/
