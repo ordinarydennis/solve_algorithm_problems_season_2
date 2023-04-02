@@ -1,33 +1,54 @@
-//solution : https://leetcode.com/problems/longest-substring-with-at-least-k-repeating-characters/solutions/882149/longest-substring-with-at-least-k-repeating-characters/?orderBy=most_votes
-
 class Solution {
 public:
-	int longestSubstring(string s, int k) {
-		int n = s.size();
-		return longestSubstringUtil(s, 0, n, k);
-	}
-	int longestSubstringUtil(string& s, int start, int end, int k) {
+	int lengthLongestPath(string input) {
 
-		if (end < k) return 0;
+		std::vector<int> v(input.size(), 0);
 
-		int countMap[26] = { 0 };
+		v[0] = 3;
 
-		// update the countMap with the count of each character
-		for (int i = start; i < end; i++)
-			countMap[s[i] - 'a']++;
+		int tcount = 0;
 
-		for (int mid = start; mid < end; mid++) {
+		int length = 0;
 
-			if (countMap[s[mid] - 'a'] >= k) 
+		int max = 0; 
+
+		bool dot = false;
+
+		for (int i = 3; i < input.size(); i++)
+		{
+			char c = input[i];
+
+			if ('\n' == c)
+			{
 				continue;
+			}
 
-			int midNext = mid + 1;
+			if ('\t' == c)
+			{
+				v[tcount] = length;
+				tcount++;
+			}
+			else if ('.' == c)
+			{
+				int sum = 0;
 
-			while (midNext < end && countMap[s[midNext] - 'a'] < k) 
-				midNext++;
+				std::max(max, length + 3);
+				length + 3;
 
-			return max(longestSubstringUtil(s, start, mid, k), longestSubstringUtil(s, midNext, end, k));
+				length = 0;
+				tcount = 0;
+
+			}
+			else
+			{
+				if(tcount)
+				{ 
+					length += v[tcount - 1] + 1;
+				}
+
+				length++;
+			}
 		}
-		return (end - start);
+
 	}
 };
