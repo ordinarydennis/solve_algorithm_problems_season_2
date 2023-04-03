@@ -2,53 +2,53 @@ class Solution {
 public:
 	int lengthLongestPath(string input) {
 
-		std::vector<int> v(input.size(), 0);
+		input.push_back('\n');
 
-		v[0] = 3;
+		vector<int> levels(300, 0);
 
-		int tcount = 0;
+		int level = 0;
+
+		bool isFile = false;
+
+		int ans = 0;
 
 		int length = 0;
 
-		int max = 0; 
-
-		bool dot = false;
-
-		for (int i = 3; i < input.size(); i++)
+		for (char c : input)
 		{
-			char c = input[i];
-
-			if ('\n' == c)
+			switch (c)
 			{
-				continue;
-			}
-
-			if ('\t' == c)
+			case '\n':
 			{
-				v[tcount] = length;
-				tcount++;
-			}
-			else if ('.' == c)
-			{
-				int sum = 0;
-
-				std::max(max, length + 3);
-				length + 3;
-
+				level = 0;
 				length = 0;
-				tcount = 0;
-
+				isFile = false;
+				break;
 			}
-			else
+			case '\t':
 			{
-				if(tcount)
-				{ 
-					length += v[tcount - 1] + 1;
-				}
+				level++;
+				break;
+			}
+			case '.':
+				isFile = true;
 
+			default:
 				length++;
+				levels[level] = length;
+				if (isFile)
+				{
+					ans = max(ans, accumulate(levels.begin(), levels.begin() + level + 1, 0) + level);
+				}
 			}
 		}
 
+		return ans;
 	}
 };
+
+//Elegant C++ Solution without stack
+//https://leetcode.com/problems/longest-absolute-file-path/solutions/290430/elegant-c-solution-without-stack/
+
+//C++ O(n) Solution with hashmap
+//https://leetcode.com/problems/longest-absolute-file-path/solutions/86821/c-o-n-solution-with-hashmap/?orderBy=most_votes
