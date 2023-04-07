@@ -4,16 +4,22 @@ public:
 
 	int minDiffInBST(TreeNode* root)
 	{
-		if (root->left != NULL) 
+		if (nullptr != root->left)
+		{
 			minDiffInBST(root->left);
+		}
 
-		if (pre >= 0) 
-			res = min(res, root->val - pre);
+		if (0 <= pre)
+		{
+			res = std::min(res, root->val - pre);
+		}
 
 		pre = root->val;
 
-		if (root->right != NULL) 
+		if (nullptr != root->right)
+		{
 			minDiffInBST(root->right);
+		}
 
 		return res;
 	}
