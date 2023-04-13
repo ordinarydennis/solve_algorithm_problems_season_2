@@ -13,48 +13,32 @@ class Solution {
 public:
     int findBottomLeftValue(TreeNode* root) {
 
-		std::queue<std::pair<TreeNode*, bool>> q;
+		std::queue<TreeNode*> q;
 
-        int ret = INT_MIN;
-
-        if (root->left)
-        {
-            q.push({ root, false });
-        }
-        else
-        {
-			q.push({ root, true });
-			ret = root->val;
-        }
+        q.push(root);
         
+		const TreeNode* node = nullptr;
+
         while (q.size())
         {
-            int size = q.size();
+			node = q.front();
 
-			for (int i = 0; i < size; i++)
-            {
-                auto pair = q.front();
+			q.pop();
 
-                q.pop();
-               
-                if (pair.first->left)
-                {
-                    q.push({ pair.first->left , true });
-                }
+			//need to push right node first because we need to find left node of last row.
+			if (node->right)
+			{
+				q.push(node->right);
+			}
 
-                if (pair.first->right)
-                {
-                    q.push({ pair.first->right, false });
-                }
-                
-                if (pair.second)
-                {
-                    ret = std::max(ret, pair.first->val);
-                }
-                
-            }
+			if (node->left)
+			{
+				q.push(node->left);
+			}
         }
         
-        return ret;
+        return node->val;
     }
 };
+
+//https://leetcode.com/problems/find-bottom-left-tree-value/solutions/98779/right-to-left-bfs-python-java/
