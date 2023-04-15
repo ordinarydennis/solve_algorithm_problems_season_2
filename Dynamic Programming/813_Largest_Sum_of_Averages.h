@@ -32,3 +32,33 @@ public:
 
 	}
 };
+
+
+class Solution {
+	public double largestSumOfAverages(int[] A, int K)
+	{
+		int[] sum = new int[A.length];
+
+		for (int i = 0; i < A.length; i++) 
+			sum[i] = A[i] + (i > 0 ? sum[i - 1] : 0);
+
+		return h(A, K, sum, A.length, 0);
+	}
+
+	public double h(int[] A, int k, int[] sum, int len, int s)
+	{
+		if (k == 1)
+			return ((double)(sum[len - 1] - sum[s] + A[s]) / (len - s));
+
+		double num = 0;
+		
+		for (int i = s; i + k <= len; i++)
+		{
+			num = Math.max(num, 
+				((double)(sum[i] - sum[s] + A[s]) / (i - s + 1)) + 
+				h(A, k - 1, sum, len, i + 1)
+			);
+		}
+		return num;
+	}
+}
