@@ -2,8 +2,9 @@ class Solution {
 public:
 	int islandPerimeter(vector<vector<int>>& grid) {
 
-		int xMax = INT_MIN;
-		int yMax = INT_MIN;
+		int islandCount = 0;
+		int adjacentIslandCount = 0;
+
 
 		for (int y = 0; y < grid.size(); y++)
 		{
@@ -13,12 +14,23 @@ public:
 			{
 				if (grid[y][x])
 				{
-					xMax = std::max(xMax, x);
-					yMax = std::max(yMax, y);
+					islandCount++;
+
+					if (y && grid[y - 1][x])
+					{
+						adjacentIslandCount++;
+					}
+					if (x && grid[y][x - 1])
+					{
+						adjacentIslandCount++;
+					}
 				}
 			}
 		}
 
-		return (xMax + 1) * (yMax + 1);
+		return islandCount * 4 - adjacentIslandCount * 2;
 	}
 };
+
+
+//https://leetcode.com/problems/island-perimeter/solutions/95126/c-solution-with-explanation/?orderBy=most_votes
