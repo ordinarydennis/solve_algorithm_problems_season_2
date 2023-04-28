@@ -1,30 +1,36 @@
-class Solution {
+class Solution
+{
 public:
-	bool isValidSudoku(vector<vector<char>>& board) {
+	bool isValidSudoku(vector<vector<char> >& board)
+	{
+		int used1[9][9] = { 0 }, used2[9][9] = { 0 }, used3[9][9] = { 0 };
 
-		vector<vector<char>> board2(board.size(), vector<char>(board[0].size(), '.'));
-
-		std::set<char> cul;
-
-		for (int y = 0; y < board.size(); y++)
+		for (int i = 0; i < board.size(); ++i)
 		{
-			std::set<char> row;
-
-			for (int x = 0; x < board[0].size(); x++)
+			for (int j = 0; j < board[i].size(); ++j)
 			{
-				if ('.' != board[y][x])
+				if (board[i][j] != '.')
 				{
-					if (0 == row.count(board[y][x])
-					{
-						row.insert(board[y][x]);
-					}
-					else
-					{
+					int num = board[i][j] - '0' - 1;
+					int k = i / 3 * 3 + j / 3;
+
+					if (used1[i][num] || used2[j][num] || used3[k][num])
 						return false;
-					}
+
+					used1[i][num] = used2[j][num] = used3[k][num] = 1;
 				}
 			}
 		}
 
+
+		return true;
 	}
 };
+
+//Three flags are used to check whether a number appear.
+//used1: check each row
+//used2 : check each column
+//used3 : check each sub - boxes
+//leetcode.com/problems/valid-sudoku/solutions/15464/my-short-solution-by-c-o-n2/?orderBy=most_votes
+
+
