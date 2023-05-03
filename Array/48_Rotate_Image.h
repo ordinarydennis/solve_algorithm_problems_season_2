@@ -15,3 +15,6 @@ public:
         }
     }
 };
+
+//https://leetcode.com/problems/rotate-image/solutions/19002/4ms-few-lines-c-code-rotate-image-90-degree-for-o-1-space/?orderBy=most_votes
+//https://leetcode.com/problems/rotate-image/solutions/18884/seven-short-solutions-1-to-7-lines/?orderBy=most_votes
