@@ -1,40 +1,35 @@
 class Solution {
 public:
-    vector<int> nextGreaterElement(vector<int>& nums1, vector<int>& nums2) {
+	vector<int> nextGreaterElement(vector<int>& nums1, vector<int>& nums2) {
 
-        vector<int> ret;
+		std::unordered_map<int, int> memo;
+		std::stack<int> st;
 
-        for (int i = 0; i < nums1.size(); i++)
-        {
-            auto it = std::find(nums2.begin(), nums2.end(), nums1[i]);
+		std::vector<int> ret(nums1.size(), -1);
 
-            if (nums2.end() == it)
-            {
-                ret.push_back(-1);
-            }
-            else
-            {
-                bool isFind = false;
+		for (int i = 0; i < nums2.size(); i++)
+		{
+			while(st.size() && st.top() < nums2[i])
+			{
+				memo[st.top()] = nums2[i];
+				st.pop();
+			}
 
-                while(++it < nums2.end())
-                {
-                    if (nums1[i] < *it)
-                    {
-                        ret.push_back(*it);
-                        isFind = true;
-                        break;
-                    }
-                }
+			st.push(nums2[i]);
+		}
+	
+		for (int i = 0; i < nums1.size(); i++)
+		{
+			auto it = memo.find(nums1[i]);
 
-                if (false == isFind)
-                {
-                    ret.push_back(-1);
-                }
-            }
-        }
+			if (memo.end() != it)
+			{
+				ret[i] = it->second;
+			}
+		}
 
-        return ret;
-    }
+		return ret;
+	}
 };
 
 //need to read solution
