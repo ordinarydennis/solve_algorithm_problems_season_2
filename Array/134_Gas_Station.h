@@ -4,36 +4,40 @@ public:
 
 		int ret = -1;
 
-		for (int i = 0; i < gas.size(); i++)
+		int size = gas.size();
+
+		for (int i = 0; i < size; i++)
 		{
 			int acount = 0;
 
-			for (int a = 0; a < gas.size(); a++)
+			int a = i;
+
+			int count = 0;
+
+			while (count < size)
 			{
-				int pos = (i + a) % gas.size();
+				int index = (a) % gas.size();
 
-				acount += gas[pos];
+				acount += gas[index] - cost[index];
 
-				if (0 < a)
-				{
-					int pos2 = (i + a - 1) % gas.size();
-					acount -= cost[pos2];
-				}
-				
-				if (acount <= 0)
+				if (acount < 0)
 				{
 					break;
 				}
+
+				count++;
+				a++;
 			}
 
-			if (0 < acount)
+			if (count == size && 0 <= acount)
 			{
 				ret = i;
 				break;
 			}
 		}
 
-
 		return ret;
 	}
 };
+
+https://leetcode.com/problems/gas-station/solutions/1706142/java-c-python-an-explanation-that-ever-exists-till-now/?orderBy=most_votes
