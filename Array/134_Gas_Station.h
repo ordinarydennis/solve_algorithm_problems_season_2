@@ -1,43 +1,23 @@
 class Solution {
 public:
 	int canCompleteCircuit(vector<int>& gas, vector<int>& cost) {
+		int n = gas.size();
+		int total_surplus = 0;
+		int surplus = 0;
+		int start = 0;
 
-		int ret = -1;
-
-		int size = gas.size();
-
-		for (int i = 0; i < size; i++)
-		{
-			int acount = 0;
-
-			int a = i;
-
-			int count = 0;
-
-			while (count < size)
-			{
-				int index = (a) % gas.size();
-
-				acount += gas[index] - cost[index];
-
-				if (acount < 0)
-				{
-					break;
-				}
-
-				count++;
-				a++;
-			}
-
-			if (count == size && 0 <= acount)
-			{
-				ret = i;
-				break;
+		for (int i = 0; i < n; i++) {
+			total_surplus += gas[i] - cost[i];
+			surplus += gas[i] - cost[i];
+			if (surplus < 0) {
+				surplus = 0;
+				start = i + 1;
 			}
 		}
-
-		return ret;
+		return (total_surplus < 0) ? -1 : start;
 	}
 };
 
 https://leetcode.com/problems/gas-station/solutions/1706142/java-c-python-an-explanation-that-ever-exists-till-now/?orderBy=most_votes
+
+
