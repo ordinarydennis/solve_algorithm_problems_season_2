@@ -1,20 +1,60 @@
 class Solution {
 public:
+	//brute force
 	int canCompleteCircuit(vector<int>& gas, vector<int>& cost) {
-		int n = gas.size();
-		int total_surplus = 0;
-		int surplus = 0;
-		int start = 0;
 
-		for (int i = 0; i < n; i++) {
-			total_surplus += gas[i] - cost[i];
-			surplus += gas[i] - cost[i];
-			if (surplus < 0) {
-				surplus = 0;
-				start = i + 1;
+		int size = gas.size();
+
+		for (int i = 0; i < size; i++)
+		{
+			int total = 0;
+			int index = i;
+			int count = size;
+
+			while (count)
+			{
+				total += gas[index % size] - cost[index % size];
+				count--;
+				index++;
+
+				if (total <= 0)
+				{
+					break;
+				}
+			}
+
+			if (0 == count && 0 <= total)
+			{
+				return i;
 			}
 		}
-		return (total_surplus < 0) ? -1 : start;
+
+		return -1;
+	}
+};
+
+class Solution {
+public:
+	int canCompleteCircuit(vector<int>& gas, vector<int>& cost) {
+
+		int total = 0;
+		int positionTotal = 0;
+		int index = 0;
+
+		for (int i = 0; i < gas.size(); i++)
+		{
+			total += gas[i] - cost[i];
+			
+			positionTotal += gas[i] - cost[i];
+
+			if (positionTotal < 0)
+			{
+				positionTotal = 0;
+				index = i + 1;
+			}
+		}
+
+		return (0 <= total) ? index : -1;
 	}
 };
 
