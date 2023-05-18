@@ -2,22 +2,8 @@ class Solution {
 public:
 	vector<int> twoSum(vector<int>& numbers, int target) {
 
-		//vector<int> numList;
-		//numList.reserve(numbers.size());
-
-		//int i = 0;
-
-		//while (numbers[i] <= target && i < numbers.size())
-		//{
-		//	numList.push_back(numbers[i]);
-		//	i++;
-		//}
-
-
 		int start = 0;
 		int end = numbers.size() - 1;
-
-		vector<int> ret;
 
 		while (start < end)
 		{
@@ -32,12 +18,34 @@ public:
 			}
 			else
 			{
-				ret.push_back(start + 1);
-				ret.push_back(end + 1);
-				break;
+				return vector<int>{ start + 1, end + 1 };
 			}
 		}
 
-		return ret;
+		return {};
 	}
 };
+
+//using hash_map
+class Solution {
+public:
+	vector<int> twoSum(vector<int>& numbers, int target) {
+
+		std::unordered_map<int, int> m;
+
+		for (int i = 0; i < numbers.size(); i++)
+		{
+			if (m.count(target - numbers[i]))
+			{
+				return vector<int>{ m[target - numbers[i]], i + 1};
+			}
+
+			m.emplace(numbers[i], i + 1);
+		}
+
+		return {};
+	}
+};
+
+
+//https://leetcode.com/problems/two-sum-ii-input-array-is-sorted/solutions/2128516/4-approaches-brute-force-hashmap-binary-search-two-pointers/
