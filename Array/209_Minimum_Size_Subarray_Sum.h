@@ -2,23 +2,28 @@ class Solution {
 public:
 	int minSubArrayLen(int target, vector<int>& nums) {
 
-		std::sort(nums.begin(), nums.end(), greater<int>());
+		int l = 0;
+		int r = 0;
+
+		int length = nums.size();
+
+		int ret = INT_MAX;
 
 		int sum = 0;
 
-		int ret = 0;
-		for (int i = 0; i < nums.size(); i++)
+		while (r < length)
 		{
-			sum += nums[i];
+			sum += nums[r++];
 
-			if (target <= sum)
+			while (target <= sum)
 			{
-				ret = i + 1;
-				break;
+				ret = std::min(ret, r - l);
+				sum -= nums[l++];
 			}
 		}
 
-		return ret;
-
+		return (INT_MAX == ret) ? 0 : ret;
 	}
 };
+
+//https://leetcode.com/problems/minimum-size-subarray-sum/solutions/59090/c-o-n-and-o-nlogn/
