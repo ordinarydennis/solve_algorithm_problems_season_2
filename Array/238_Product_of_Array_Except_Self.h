@@ -2,24 +2,23 @@ class Solution {
 public:
 	vector<int> productExceptSelf(vector<int>& nums) {
 
-		vector<int> ret(nums.size(), 1);
+		int prod = 1, zeroCnt = count(begin(nums), end(nums), 0);
 
-		for (int a = 0; a < nums.size(); a++)
+		if (zeroCnt > 1)
+			return vector<int>(size(nums));               // Case-1
+
+		for (auto c : nums)
+			if (c) prod *= c;                                          // calculate product of all elements except 0
+
+		for (auto& c : nums)
 		{
-			int p = 1;
-
-			for (int b = 0; b < nums.size(); b++)
-			{
-				if (a != b)
-				{
-					p = p * nums[b];
-				}
-			}
-
-			ret[a] = p;
+			if (zeroCnt)
+				c = c ? 0 : prod;                             // Case-2
+			else 
+				c = prod / c;                                        // Case-3
 		}
 
-		return ret;
 
+		return nums;
 	}
 };
