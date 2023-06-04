@@ -2,79 +2,45 @@ class Solution {
 public:
 	vector<vector<int>> kSmallestPairs(vector<int>& nums1, vector<int>& nums2, int k) {
 
-		int a = 0;
-		int b = 0;
-		std::vector<std::pair<int, int>> pList;
- 
-		std::unordered_map<int, int> m;
+		std::priority_queue<std::pair<int, std::pair<int, int>>> pq;
 
-		while (a < nums1.size() || b < nums2.size())
+		for (int i = 0; i < nums1.size(); i++)
 		{
-			if (a < nums1.size() && b < nums2.size())
+			for (int j = 0; j < nums2.size(); j++)
 			{
-				if (nums1[a] < nums2[b])
+				int sum = nums1[i] + nums2[j];
+
+				if (pq.size() < k)
 				{
-					pList.push_back({ 0, nums1[a++] });
+					pq.push(pair{ sum, pair{nums1[i] , nums2[j]} });
+				}
+				else if(sum < pq.top().first)
+				{
+					pq.pop();
+					pq.push(pair{ sum, pair{nums1[i] , nums2[j]} });
 				}
 				else
 				{
-					pList.push_back({ 1, nums2[b++] });
+					break;
 				}
-				continue;
-			}
-
-			while(a < nums1.size())
-			{
-				pList.push_back({ 0, nums1[a++] });
-			}
-
-			while (b < nums2.size())
-			{
-				pList.push_back({ 1, nums2[b++] });
 			}
 		}
-
-		std::set<int> check;
 
 		vector<vector<int>> ret;
 
-		for(int i = 0; i < pList.size(); i++)
+		while (pq.size())
 		{
-			auto p1 = pList[i];
+			auto t = pq.top();
 
-			for (int j = 0; j < pList.size(); j++)
-			{
-				if (i == j)
-				{
-					continue;
-				}
-
-				if (check.count(j))
-				{
-					continue;
-				}
-
-				auto p2 = pList[j];
-
-				if (p1.first == p2.first)
-				{
-					continue;
-				}
-
-				ret.push_back(vector<int>{ p1.second, p2.second});
-
-				check.insert(i);
-
-				if (k <= ret.size())
-				{
-					return ret;
-				}
-
-				break;
-			}
+			const auto& e = t.second;
+			ret.push_back(std::vector<int> { e.first, e.second });
+			pq.pop();
 		}
 
 		return ret;
-
 	}
 };
+
+
+//read solution
+//https://leetcode.com/problems/find-k-pairs-with-smallest-sums/solutions/596658/c-solution-with-diagram-explaination-for-beginners/
