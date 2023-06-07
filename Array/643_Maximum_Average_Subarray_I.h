@@ -2,19 +2,28 @@ class Solution {
 public:
 	double findMaxAverage(vector<int>& nums, int k) {
 
+		double ret = INT_MIN;
+		double sum = 0; 
 
-		int l = 0;
-	
-		double sum = 0;
-
-		while (l + k < nums.size())
+		for (int i = 0; i < nums.size(); i++)
 		{
-			double sum2 = std::accumulate(nums.begin() + l, nums.begin() + l + k + 1, 0);
-			sum = std::max(sum2, sum);
-			l++;
+			if (i < k)
+			{
+				sum += nums[i];
+			}
+			else
+			{
+				ret = std::max(sum, ret);
+				sum += nums[i] - nums[i - k];
+			}
 		}
 
-		return sum / k;
+		ret = std::max(ret, sum);
 
+		return ret / k;
 	}
 };
+
+
+//C++ simple sliding-window solution
+//leetcode.com/problems/maximum-average-subarray-i/solutions/105428/c-simple-sliding-window-solution/
