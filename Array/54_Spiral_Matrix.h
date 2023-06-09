@@ -2,61 +2,40 @@ class Solution {
 public:
 	vector<int> spiralOrder(vector<vector<int>>& matrix) {
 
-		int t = 0; 
-		int b = 0; 
-		int l = 0; 
-		int r = 0;
+		vector<vector<int> > dirs{ {0, 1}, {1, 0}, {0, -1}, {-1, 0} };
 
-		int x = 0; 
-		int y = 0; 
+		vector<int> res;
 
-		int maxX = matrix.size();
-		int maxY = matrix[0].size();
+		int nr = matrix.size();    
+		
+		if (nr == 0)
+			return res;
 
-		vector<int> ret;
+		int nc = matrix[0].size();  
+		
+		if (nc == 0) 
+			return res;
 
-		ret.reserve(maxX * maxY);
+		vector<int> nSteps{ nc, nr - 1 };
 
-		while (1)
+		int iDir = 0;   // index of direction.
+
+		int ir = 0, ic = -1;    // initial position
+
+		while (nSteps[iDir % 2])
 		{
-			while (x < maxX - r)
+			for (int i = 0; i < nSteps[iDir % 2]; ++i)
 			{
-				ret.push_back(matrix[y][x++]);
+				ir += dirs[iDir][0]; 
+				ic += dirs[iDir][1];
+
+				res.push_back(matrix[ir][ic]);
 			}
 
-			x--;
-			t++;
+			nSteps[iDir % 2]--;
 
-			while (y < maxY - b)
-			{
-				ret.push_back(matrix[++y][x]);
-			}
-
-			y--;
-			r++;
-
-			while (l <= x)
-			{
-				ret.push_back(matrix[y][--x]);
-			}
-
-			x++;
-			b++;
-
-			while (t <= y)
-			{
-				ret.push_back(matrix[--y][x]);
-			}
-
-			y++;
-			l++;
-
-			if (ret.size() == maxX * maxY)
-			{
-				break;
-			}
+			iDir = (iDir + 1) % 4;
 		}
-
-		return ret;
+		return res;
 	}
 };
