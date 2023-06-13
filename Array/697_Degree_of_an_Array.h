@@ -1,46 +1,29 @@
 class Solution {
 public:
-	int findShortestSubArray(vector<int>& nums) {
+	int findShortestSubArray(vector<int>& A) {
 
-		std::unordered_map<int, int> m;
+		unordered_map<int, int> count, first;
 
-		int max = INT_MIN;
+		int res = 0, degree = 0;
 
-		for (int n : nums)
+		for (int i = 0; i < A.size(); ++i)
 		{
-			m[n]++;
-			max = std::max(m[n], max);
-		}
+			if (first.count(A[i]) == 0) 
+				first[A[i]] = i;
 
-		int ret = 0;
-
-		for (int i = 0; i < nums.size(); i++)
-		{
-			int min = INT_MAX;
-
-			m.clear();
-
-			for (int j = i; j < nums.size(); j++)
+			if (++count[A[i]] > degree)
 			{
-				m[j]++;
-
-				if (max == m[j])
-				{
-					if (max == j - i + 1)
-					{
-						return max;
-					}
-					else
-					{
-						min = std::min(min, j - i + 1);
-						ret = min;
-						break;
-					}
-				}
+				degree = count[A[i]];
+				res = i - first[A[i]] + 1;
+			}
+			else if (count[A[i]] == degree)
+			{
+				res = min(res, i - first[A[i]] + 1);
 			}
 		}
 
-		return ret;
-
+		return res;
 	}
 };
+
+// solution https://leetcode.com/problems/degree-of-an-array/solutions/124317/java-c-python-one-pass-solution/
