@@ -2,27 +2,39 @@ class Solution {
 public:
 	int findShortestSubArray(vector<int>& A) {
 
-		unordered_map<int, int> count, first;
+		int degree = 0;
 
-		int res = 0, degree = 0;
+		std::unordered_map<int, int> count;
+		std::unordered_map<int, int> start;
 
-		for (int i = 0; i < A.size(); ++i)
+		int ret = INT_MAX;
+
+		for (int i = 0; i < A.size(); i++)
 		{
-			if (first.count(A[i]) == 0) 
-				first[A[i]] = i;
+			int n = A[i];
 
-			if (++count[A[i]] > degree)
+			count[n]++;
+
+			if (1 == count[n])
 			{
-				degree = count[A[i]];
-				res = i - first[A[i]] + 1;
+				start[n] = i;
 			}
-			else if (count[A[i]] == degree)
+
+			if (degree < count[n])
 			{
-				res = min(res, i - first[A[i]] + 1);
+				degree = count[n];
+				ret = i - start[n] + 1;
+			}
+			else
+			{
+				if (1 < count[n])
+				{
+					ret = std::min(ret, i - start[n] + 1);
+				}
 			}
 		}
 
-		return res;
+		return ret;
 	}
 };
 
