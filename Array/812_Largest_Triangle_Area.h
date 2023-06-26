@@ -1,39 +1,14 @@
 class Solution {
 public:
-    double largestTriangleArea(vector<vector<int>>& points) {
+    double largestTriangleArea(vector<vector<int>>& p) {
 
+        double res = 0;
 
-        std::sort(points.begin(), points.end(), [](const vector<int>& l, const vector<int>& r) {
+        for (auto& i : p)
+            for (auto& j : p)
+                for (auto& k : p)
+                    res = max(res, 0.5 * abs(i[0] * j[1] + j[0] * k[1] + k[0] * i[1] - j[0] * i[1] - k[0] * j[1] - i[0] * k[1]));
 
-            if (l[0] > r[0])
-            {
-                return true;
-            }
-
-            if (l[0] < r[0])
-            {
-                return false;
-            }
-
-            if (l[0] == r[0])
-            {
-                if (l[1] > r[1])
-                {
-                    return true;
-                }
-
-                if (l[1] < r[1])
-                {
-                    return false;
-                }
-            }
-
-            return true;
-
-            }
-        );
-
-        return (points[0][0] - points[points.size() - 1][0] * points[1][1] - points[points.size() - 1][1]) / 2;
-
+        return res;
     }
 };
