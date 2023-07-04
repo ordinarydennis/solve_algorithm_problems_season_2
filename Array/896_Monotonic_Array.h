@@ -1,43 +1,23 @@
 class Solution {
 public:
-	bool isMonotonic(vector<int>& nums) {
+	bool isMonotonic(vector<int> A) {
 
-	
-		bool isCheck = false;
-		bool isIncr = true;
+		bool inc = true;
+		bool dec = true;
 
-		for (int i = 0; i < nums.size() - 1; i++)
+		for (int i = 1; i < A.size(); i++)
 		{
-			if (nums[i] == nums[i + 1])
-			{
-				continue;
-			}
+			inc &= A[i - 1] <= A[i];
 
-			if (false == isCheck)
-			{
-				if (nums[i] > nums[i + 1])
-				{
-					isIncr = false;
-				}
-				isCheck = true;
-			}
-			else if (isIncr)
-			{
-				if (nums[i] > nums[i + 1])
-				{
-					return false;
-				}
-			}
-			else
-			{
-				if (nums[i] < nums[i + 1])
-				{
-					return false;
-				}
-			}
+			dec &= A[i - 1] >= A[i];
 
+			if (!inc && !dec)
+				return false;
 		}
+			
 
-		return true;
+		return inc || dec;
 	}
 };
+
+//https://leetcode.com/problems/monotonic-array/solutions/165889/c-java-python-one-pass-o-n/
