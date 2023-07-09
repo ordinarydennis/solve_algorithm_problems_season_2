@@ -1,43 +1,16 @@
 class Solution {
 public:
-	bool isAlienSorted(vector<string>& words, string order) {
+    bool isAlienSorted(vector<string> words, string order) {
+        int mapping[26];
+        for (int i = 0; i < 26; i++)
+            mapping[order[i] - 'a'] = i;
 
-		std::unordered_map<int, int> m;
+        for (string& w : words)
+            for (char& c : w)
+                c = mapping[c - 'a'];
 
-		for (int i = 0; i < order.size(); i++)
-		{
-			m[order[i]] = i;
-		}
-
-		for (int i = 0; i < words.size() - 1; i++)
-		{
-			auto s1 = words[i];
-			auto s2 = words[i + 1];
-
-			int len = std::min(s1.size(), s2.size());
-
-			int a = 0;
-
-			for (; a < len; a++)
-			{
-				if (m[s2[a]] < m[s1[a]])
-				{
-					break;
-				}
-			}
-
-			if (len <= a && s2.size() < s1.size())
-			{
-				return false;
-			}
-
-
-			if (a <= len)
-			{
-				return true;
-			}
-		}
-
-		return true;
-	}
+        return is_sorted(words.begin(), words.end());
+    }
 };
+
+//https://leetcode.com/problems/verifying-an-alien-dictionary/solutions/203185/java-c-python-mapping-to-normal-order/
