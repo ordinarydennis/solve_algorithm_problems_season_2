@@ -2,19 +2,13 @@ class Solution {
 public:
 	vector<int> sortedSquares(vector<int>& nums) {
 
-		std::multiset<int>  s;
+		int l = 0, r = nums.size() - 1, i = nums.size() - 1;
 
-		for (int i = 0; i < nums.size(); i++)
-		{
-			s.insert(nums[i] * nums[i]);
-		}
-
-		//std::vector<int> ret(s.begin(), s.end());
-
-		std::vector<int> ret(s.size());
-		std::copy(s.begin(), s.end(), ret.begin());
+		std::vector<int> ret(nums.size());
+		
+		while (l <= r)
+			ret[i--] = abs(nums[l]) < abs(nums[r]) ? nums[r] * nums[r--] : nums[l] * nums[l++];
 
 		return ret;
-
 	}
 };
