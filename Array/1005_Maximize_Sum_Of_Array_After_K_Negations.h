@@ -1,35 +1,13 @@
 class Solution {
 public:
-    int largestSumAfterKNegations(vector<int>& nums, int k) {
-
-        std::sort(nums.begin(), nums.end());
-
-		for (int i = 0; i < nums.size(); i++)
-        {
-            if (0 == k)
-            {
-                break;
-            }
-
-            if (nums[i] < 0)
-            {
-                nums[i] *= (-1);
-                k--;
-            }
-            else if (0 == nums[i])
-            {
-                break;
-            }
-            else if(0 < nums[i])
-            {
-                if (k % 2 != 0)
-                {
-                    nums[i] *= (-1);
-                }
-                break;
-            }
-        }
-
-        return std::accumulate(nums.begin(), nums.end(), 0);
-    }
+	int largestSumAfterKNegations(vector<int>& A, int K) {
+		sort(A.begin(), A.end());
+		for (int i = 0; K > 0 && i < A.size() && A[i] < 0; ++i, --K)
+			A[i] = -A[i];
+		return accumulate(A.begin(), A.end(), 0) - (K % 2) * *min_element(A.begin(), A.end()) * 2;
+	}
 };
+
+
+//read solution
+//leetcode.com/problems/maximize-sum-of-array-after-k-negations/solutions/252254/java-c-python-sort/
