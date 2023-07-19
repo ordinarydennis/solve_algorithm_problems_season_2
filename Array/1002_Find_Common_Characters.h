@@ -1,38 +1,30 @@
 class Solution {
 public:
-    vector<string> commonChars(vector<string>& words) {
+	vector<string> commonChars(vector<string>& words) {
 
-        int length = INT_MAX;
+		vector<string> res;
 
-        for (auto& s : words)
-        {
-            sort(s.begin(), s.end());
+		//don't need to sort
+		//sort(words.begin(), words.end());
 
-            length = std::min(length, static_cast<int>(s.length()));
-        }
+		for (char c : words[0]) {
+			bool common = true;
 
-        vector<string> ret;
-
-        for (int i = 0; i < length; i++)
-        {
-            char pre = words[i][0];
-            bool check = true;
-            for (int a = 0; a < words.size(); a++)
-            {
-                if (pre != words[a][i])
-                {
-                    check = false;
-                    break;
-                }
-            }
-            if (check)
-            {
-                string s = pre;
-                ret.push_back(s);
-            }
-        }
-
-        return ret;
-
-    }
+			for (int i = 1; i < words.size(); i++) {
+				if (words[i].find(c) == string::npos) {
+					common = false;
+					break;
+				}
+				else {
+					words[i].erase(words[i].find(c), 1);
+				}
+			}
+			if (common) {
+				res.push_back(string(1, c));
+			}
+		}
+		return res;
+	}
 };
+
+//leetcode.com/problems/find-common-characters/description/
