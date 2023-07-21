@@ -1,49 +1,37 @@
 class Solution {
 public:
-	bool canThreePartsEqualSum(vector<int>& arr) {
+	bool canThreePartsEqualSum(vector<int>& A) {
 
-		std::sort(arr.begin(), arr.end());
+		int sum = std::accumulate(A.begin(), A.end(), 0);
 
-		int sum = std::accumulate(arr.begin(), arr.end(), 0);
-
-		std::unordered_set<int> checker;
-
-		int count = 0;
-
-		int target = sum / 3;
-
-		for (int c = 0; c < 3; c++)
+		if (sum % 3 != 0)
 		{
-			int s = 0;
-
-			for (int i = 0; i < arr.size(); i++)
-			{
-				if (checker.count(i))
-				{
-					continue;
-				}
-				
-				if (s + arr[i] <= target)
-				{
-					s += arr[i];
-					checker.insert(i);
-					if (s == target)
-					{
-						break;
-					}
-				}
-				else
-				{
-					break;
-				}
-			}
-
-			if (s == target)
-			{
-				count++;
-			}
+			return false;
 		}
 
-		return 3 == count;
+		int average = sum / 3;
+
+		int l = 0, r = A.size() - 1;
+
+		int leftSum = A[l++], rightSum = A[r--];
+
+		do
+		{
+			if (leftSum != average)
+				leftSum += A[l++];
+
+			if (l < r && rightSum != average)
+				rightSum += A[r--];
+
+			if (l <= r && leftSum == average && rightSum == average)
+				return true;
+
+		} while (l < r);
+
+
+		return false;
 	}
 };
+
+//there is no correct answer in leetcode.
+//if the input value is sorted, every answer is not passed.
