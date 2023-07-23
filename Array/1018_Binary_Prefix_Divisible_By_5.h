@@ -6,22 +6,16 @@ public:
 
 		ret.reserve(nums.size());
 
-		for (int k = 0; k < nums.size(); k++)
+		int num = 0;
+
+		for (int i = 0; i < nums.size(); i++)
 		{
-			int64_t s = 0;
-
-			for (int i = k; 0 <= i; i--)
-			{
-				if (1 == nums[i])
-				{
-					int e = k - i;
-					s += pow(2, e);
-				}
-			}
-
-			ret.push_back(0 == (s % 5));
+			num = (num * 2 + nums[i]) % 5; //Modulo Space..
+			ret.push_back(0 == num);
 		}
 
 		return ret;
 	}
 };
+
+//https://leetcode.com/problems/binary-prefix-divisible-by-5/solutions/265601/detailed-explanation-using-modular-arithmetic-o-n/
