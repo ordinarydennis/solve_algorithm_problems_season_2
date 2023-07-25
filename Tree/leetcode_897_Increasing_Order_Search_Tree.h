@@ -10,8 +10,30 @@
  * };
  */
 class Solution {
+
+
+    void traversal(TreeNode* root, TreeNode* out)
+    {
+        if (nullptr == root)
+        {
+            return;
+        }
+
+        traversal(root->left, out);
+
+        out = root;
+
+        traversal(root->right, out);
+    }
+
+
 public:
     TreeNode* increasingBST(TreeNode* root) {
 
+        TreeNode* out = new TreeNode();
+
+        traversal(root, out);
+
+        return out;
     }
 };
