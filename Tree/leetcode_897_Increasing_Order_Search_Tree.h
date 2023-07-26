@@ -11,29 +11,33 @@
  */
 class Solution {
 
+	void inorder(TreeNode*& ans, TreeNode* root) {
 
-    void traversal(TreeNode* root, TreeNode* out)
-    {
-        if (nullptr == root)
-        {
-            return;
-        }
+		if (!root) return;
 
-        traversal(root->left, out);
+		inorder(ans, root->left);
 
-        out = root;
+		ans->right = new TreeNode(root->val);
+		ans = ans->right;
 
-        traversal(root->right, out);
-    }
+		inorder(ans, root->right);
 
-
+	}
 public:
-    TreeNode* increasingBST(TreeNode* root) {
+	TreeNode* increasingBST(TreeNode* root) {
 
-        TreeNode* out = new TreeNode();
+		TreeNode* temp;
 
-        traversal(root, out);
+		TreeNode* ans = new TreeNode();
 
-        return out;
-    }
+		temp = ans;
+
+		inorder(ans, root);
+
+		return temp->right;
+	}
+
 };
+
+
+//https://leetcode.com/problems/increasing-order-search-tree/solutions/958108/c-inorder-traversal-o-n-easy-to-understand/
