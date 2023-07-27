@@ -11,30 +11,33 @@
  */
 class Solution {
 
-	void inorder(TreeNode*& ans, TreeNode* root) {
+	void traversal(TreeNode* root, TreeNode*& out)
+	{
+		if (nullptr == root)
+		{
+			return;
+		}
 
-		if (!root) return;
+		traversal(root->left, out);
 
-		inorder(ans, root->left);
+		out->right = new TreeNode(root->val);
 
-		ans->right = new TreeNode(root->val);
-		ans = ans->right;
+		out = out->right;
 
-		inorder(ans, root->right);
-
+		traversal(root->right, out);
 	}
+
+
 public:
 	TreeNode* increasingBST(TreeNode* root) {
 
-		TreeNode* temp;
+		TreeNode* out = new TreeNode();
 
-		TreeNode* ans = new TreeNode();
+		TreeNode* it = out;
 
-		temp = ans;
+		traversal(root, it);
 
-		inorder(ans, root);
-
-		return temp->right;
+		return out->right;
 	}
 
 };
