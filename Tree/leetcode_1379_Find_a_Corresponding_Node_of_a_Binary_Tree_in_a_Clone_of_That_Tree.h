@@ -10,6 +10,37 @@
 
 class Solution {
 
+    TreeNode* found = nullptr;
+
+    void traversal(TreeNode* original, TreeNode* cloned, TreeNode* target)
+    {
+        if (nullptr == original)
+        {
+            return;
+        }
+
+        traversal(original->left, cloned->left, target);
+
+        if (target == original)
+        {
+            found = cloned;
+        }
+
+        traversal(original->right, cloned->right, target);
+    }
+
+
+public:
+    TreeNode* getTargetCopy(TreeNode* original, TreeNode* cloned, TreeNode* target) {
+
+        traversal(original, cloned, target);
+
+        return found;
+    }
+};
+
+class Solution {
+
     TreeNode* ret = nullptr;
 
     void traversal(TreeNode* cloned, TreeNode* target)
