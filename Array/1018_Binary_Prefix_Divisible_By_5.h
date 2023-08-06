@@ -2,20 +2,27 @@ class Solution {
 public:
 	vector<bool> prefixesDivBy5(vector<int>& nums) {
 
-		std::vector<bool> ret;
+		vector<bool> ret;
 
-		ret.reserve(nums.size());
+		int sum = 0;
 
-		int num = 0;
-
-		for (int i = 0; i < nums.size(); i++)
+		for (int i= 0; i < nums.size(); i++)
 		{
-			num = (num * 2 + nums[i]) % 5; //Modulo Space..
-			ret.push_back(0 == num);
+			if (i == 0)
+			{
+				sum += nums[i];
+			}
+			else
+			{
+				sum = sum << 1;
+				sum += nums[i];
+				sum = sum % 5;
+			}
+
+			ret.push_back(0 == sum % 5);
+		   
 		}
 
 		return ret;
 	}
 };
-
-//https://leetcode.com/problems/binary-prefix-divisible-by-5/solutions/265601/detailed-explanation-using-modular-arithmetic-o-n/

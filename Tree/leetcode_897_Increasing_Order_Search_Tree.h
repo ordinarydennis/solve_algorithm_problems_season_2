@@ -11,36 +11,31 @@
  */
 class Solution {
 
-	void traversal(TreeNode* root, TreeNode*& out)
-	{
-		if (nullptr == root)
-		{
-			return;
-		}
+    void traversal(TreeNode* root, TreeNode*& newNode)
+    {
+        if (nullptr == root)
+        {
+            return;
+        }
 
-		traversal(root->left, out);
+        traversal(root->left, newNode);
 
-		out->right = new TreeNode(root->val);
+        newNode->right = new TreeNode(root->val);
+ 
+        newNode = newNode->right;
 
-		out = out->right;
-
-		traversal(root->right, out);
-	}
-
+        traversal(root->right, newNode);
+    }
 
 public:
-	TreeNode* increasingBST(TreeNode* root) {
+    TreeNode* increasingBST(TreeNode* root) {
 
-		TreeNode* out = new TreeNode();
+        TreeNode* newNode = new TreeNode();
 
-		TreeNode* it = out;
+        TreeNode* it = newNode;
 
-		traversal(root, it);
+        traversal(root, it);
 
-		return out->right;
-	}
-
+        return newNode->right;
+    }
 };
-
-
-//https://leetcode.com/problems/increasing-order-search-tree/solutions/958108/c-inorder-traversal-o-n-easy-to-understand/
