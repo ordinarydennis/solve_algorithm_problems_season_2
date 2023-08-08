@@ -2,53 +2,16 @@ class Solution {
 public:
 	int largestSumAfterKNegations(vector<int>& nums, int k) {
 
-		std::multimap<int, int> m;
+		std::sort(nums.begin(), nums.end());
 
-		for (int i = 0; i  < nums.size(); i++)
-		{
-			m.emplace(nums[i], i);
-		}
+		//flip just negative integer to positive integer.
+		for (int i= 0; 0 < k && i < nums.size() && nums[i] < 0; i++, k--)
+			nums[i] = -nums[i];
 
 
-		for (const auto& [n, index] : m)
-		{
-			if (n < 0)
-			{
-				k--;
-				nums[index] = -nums[index];
-			}
-			else if (0 == n)
-			{
-				break;
-			}
-			else
-			{
-				k = k % 2;
-				//positive..
-				if (1 <= k)
-				{
-					k--;
-					nums[index] = -nums[index];
-				}
-			}
-
-			if (k <= 0)
-			{
-				break;
-			}
-		}
-
-		for (auto [n, inde] : m)
-		{
-			cout << n << " ";
-		}
-		cout << endl;
-		for (auto n : nums)
-		{
-			cout << n << " ";
-		}
-
-		return std::accumulate(nums.begin(), nums.end(), 0);
-
+		//if the k remaining is odd, need to subtract minimum value from total.
+		return accumulate(nums.begin(), nums.end(), 0) + 2 * (-1 * (k % 2) * *min_element(nums.begin(), nums.end()));
 	}
 };
+
+//https://leetcode.com/problems/maximize-sum-of-array-after-k-negations/solutions/252254/java-c-python-sort/
