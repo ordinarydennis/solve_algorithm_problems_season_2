@@ -1,41 +1,58 @@
-//my solution
 class Solution {
 public:
-	vector<int> sortArrayByParityII(vector<int>& A) {
+    vector<int> sortArrayByParityII(vector<int>& nums) {
 
-		for (int i = 0, j = 1; i < A.size(); i += 2, j += 2)
-		{
-			while (i < A.size() && A[i] % 2 == 0)
-				i += 2;
+        int ei = 0;
+        int oi = 1;
 
-			while (j < A.size() && A[j] % 2 == 1)
-				j += 2;
+        std::vector<int> ret(nums.size(), 0);
 
-			if (i < A.size())
-				swap(A[i], A[j]);
-		}
-		return A;
-	}
+        for (int i = 0; i < nums.size(); i++)
+        {
+            if (nums[i] % 2 == 0)
+            {
+                ret[ei] = nums[i];
+                ei += 2;
+            }
+            else
+            {
+                ret[oi] = nums[i];
+                oi += 2;
+            }
+        }
 
+        return ret;
+
+    }
 };
 
-//solution
-//https://leetcode.com/problems/sort-array-by-parity-ii/solutions/181158/c-5-lines-two-pointers-2-liner-bonus/
-vector<int> sortArrayByParityII(vector<int>& A) {
 
-	for (int i = 0, j = 1; i < A.size(); i += 2, j += 2)
-	{
-		while (i < A.size() && A[i] % 2 == 0) 
-			i += 2;
+//https://leetcode.com/problems/sort-array-by-parity-ii/solutions/1490847/c-two-pointers-solution/
+class Solution {
+public:
+    vector<int> sortArrayByParityII(vector<int>& nums) {
 
-		while (j < A.size() && A[j] % 2 == 1)
-			j += 2;
+        int ei = 0;
+        int oi = 1;
 
-		//i´Â Â¦¼öÁö¸¸ È¦¼ö°¡ ³ª¿Â ÀÎµ¦½º
-		//j´Â È¦¼öÁö¸¸ Â¦¼ö°¡ ³ª¿Â ÀÎµ¦½º
-		//µÑÀÌ Ä¡È¯
-		if (i < A.size()) 
-			swap(A[i], A[j]);
-	}
-	return A;
-}
+        while (ei < nums.size() && oi < nums.size())
+        {
+            if (nums[ei] % 2 == 1 && nums[oi] % 2 == 0)
+            {
+                std::swap(nums[ei], nums[oi]);
+            }
+            else if(nums[ei] % 2 == 0)
+            {
+                ei += 2;
+            }
+            else if (nums[oi] % 2 == 1)
+            {
+                oi += 2;
+            }
+
+
+        }
+
+        return nums;
+    }
+};
