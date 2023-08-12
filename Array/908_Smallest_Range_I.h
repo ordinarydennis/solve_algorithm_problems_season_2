@@ -1,3 +1,4 @@
+//first solution
 class Solution {
 public:
 	int smallestRangeI(vector<int>& nums, int k) {
@@ -23,5 +24,19 @@ public:
 		}
 		
 		return 0;
+	}
+};
+
+//second solution
+class Solution {
+public:
+	int smallestRangeI(vector<int>& nums, int k) {
+
+		std::sort(nums.begin(), nums.end());
+
+		int ret = (nums[nums.size() - 1] - k) - nums[0] - k;
+
+		return 0 < ret ? ret : 0;
+
 	}
 };
