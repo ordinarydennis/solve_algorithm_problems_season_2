@@ -4,11 +4,11 @@ public:
 
         int count = 0;
 
-        int ret = 0;
+        int ret = INT_MIN;
 
-        for (int i = 0; i < nums.size() - 1; i++)
+        for (int i = 1; i < nums.size(); i++)
         {
-            if (nums[i] < nums[i + 1])
+            if (0 < nums[i] - nums[i - 1])
             {
                 count++;
             }
@@ -19,7 +19,10 @@ public:
             }
         }
 
-        ret = std::max(ret, count);
+        if (ret == INT_MIN)
+        {
+            ret = count;
+        }
 
         return ret + 1;
     }
