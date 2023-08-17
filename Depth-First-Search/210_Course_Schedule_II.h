@@ -1,29 +1,58 @@
 class Solution {
+
+	std::unordered_set<int> memo;
+
+	std::unordered_set<int> todo;
+
+	bool find(const std::unordered_map<int, vector<int>>& graph, int preCourse, vector<int>& ret)
+	{
+		if (memo.count(preCourse))
+			return true;
+
+		if (todo.count(preCourse))
+			return false;
+
+		memo.insert(preCourse);
+		todo.insert(preCourse);
+
+		auto it = graph.find(preCourse);
+
+		if (graph.end() != it)
+		{
+			for (int c : it->second)
+			{
+				if (false == find(graph, c, ret))
+					return false;
+			}
+		}
+
+		ret.push_back(preCourse);
+		todo.erase(preCourse);
+		return true;
+	}
+
 public:
-    vector<int> findOrder(int num, vector<vector<int>>& pre) {
-        int n = num;
-        vector<vector<int>> adj(num);
-        vector<int> deg(num), order;
-        for (auto x : pre) {
-            adj[x[1]].push_back(x[0]);
-            deg[x[0]]++;
-        }
-        queue<int>q;
-        for (int i = 0; i < num; i++) {
-            if (deg[i] == 0) q.push(i);
-        }
-        while (!q.empty()) {
-            int f = q.front();
-            q.pop();
-            order.push_back(f);
-            n--;
-            for (auto v : adj[f]) {
-                if (--deg[v] == 0) q.push(v);
-            }
-        }
-        if (n != 0) return {};
-        return order;
-    }
+	vector<int> findOrder(int numCourses, vector<vector<int>>& prerequisites) {
+
+		vector<int> ret;
+
+		std::unordered_map<int, vector<int>> graph;
+
+		for (const auto& p : prerequisites)
+		{
+			graph[p[1]].push_back(p[0]);
+		}
+
+		for (int i = 0; i < numCourses; i++)
+		{
+			if (false == find(graph, i, ret))
+				return {};
+		}
+
+		reverse(ret.begin(), ret.end());
+
+		return ret;
+	}
 };
 
 //read solution
