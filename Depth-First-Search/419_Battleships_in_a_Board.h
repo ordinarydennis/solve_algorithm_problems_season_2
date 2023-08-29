@@ -1,84 +1,42 @@
 class Solution {
-
-	void dfsLeft(vector<vector<char>>& board, vector<vector<bool>>& checked, int x, int y, int& count)
-	{
-		if (board[0].size() <= x)
-		{
-			return;
-		}
-
-		if ('.' == board[y][x])
-		{
-			return;
-		}
-
-		count++;
-
-		checked[y][x] = true;
-
-		dfsLeft(board, checked, x + 1, y, count);
-	}
-
-	void dfsDown(vector<vector<char>>& board, vector<vector<bool>>& checked, int x, int y, int& count)
-	{
-		if (board.size() <= y)
-		{
-			return;
-		}
-		
-		if ('.' == board[y][x])
-		{
-			return;
-		}
-
-		count++;
-
-		checked[y][x] = true;
-
-		dfsDown(board, checked, x, y + 1, count);
-	}
-
 public:
 	int countBattleships(vector<vector<char>>& board) {
 
-		vector<vector<bool>> checked(board.size(), vector<bool>(board[0].size(), false));
+		if (board.empty() || board[0].empty())
+		{
+			return 0;
+		}
+
+		int r_size = static_cast<int>(board.size());
+		int c_size = static_cast<int>(board[0].size());
 
 		int ret = 0;
 
-		for(int y = 0; y < board.size(); y++)
+		for (int r = 0; r < r_size; r++)
 		{
-			for (int x = 0; x < board.size(); x++)
+			for (int c = 0; c < c_size; c++)
 			{
-				if ('.' == board[y][x])
+				if ('X' != board[r][c])
 				{
 					continue;
 				}
 
-				if (checked[y][x])
+				if (r != 0 && 'X' == board[r - 1][c])
+				{
+					continue;
+				}
+				
+				if (c != 0 && 'X' == board[r][c - 1])
 				{
 					continue;
 				}
 
-				int count = 0;
-
-				dfsLeft(board, checked, x, y, count);
-
-				if (count)
-				{
-					ret++;
-					continue;
-				}
-
-				dfsDown(board, checked, x, y, count);
-
-				if (count)
-				{
-					ret++;
-					continue;
-				}
+				ret++;
 			}
 		}
 
 		return ret;
 	}
 };
+
+//https://leetcode.com/problems/battleships-in-a-board/solutions/90909/c-3ms-6-lines-solution-with-runtime-o-n-and-space-o-1/
