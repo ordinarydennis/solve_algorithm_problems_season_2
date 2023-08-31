@@ -10,39 +10,27 @@
  * };
  */
 class Solution {
-
-    void dfs(TreeNode* root, int sum, int targetSum, int& ret)
-    {
-        if (nullptr == root)
-        {
-            return ;
-        }
-
-        if (targetSum == root->val + sum)
-        {
-            ret++;
-        }
-
-        if (targetSum <= root->val + sum)
-        {
-			dfs(root->left, root->val, targetSum, ret);
-			dfs(root->right, root->val, targetSum, ret);
-        }
-
-        else
-        {
-            dfs(root->left, root->val + sum, targetSum, ret);
-            dfs(root->right, root->val + sum, targetSum, ret);
-        }
-    }
-
 public:
-    int pathSum(TreeNode* root, int targetSum) {
+	int ans = 0;
+	int pathSum(TreeNode* root, int sum) {
+		if (root) {
+			dfs(root, sum);
+			pathSum(root->left, sum);
+			pathSum(root->right, sum);
+		}
+		return ans;
+	}
+	void dfs(TreeNode* root, long long sum) {
 
-        int ret = 0;
+		if (!root)
+			return;
 
-        dfs(root, 0, targetSum, ret);
+		if (root->val == sum)
+			ans++;
 
-        return ret;
-    }
+		dfs(root->left, sum - root->val);
+		dfs(root->right, sum - root->val);
+	}
 };
+
+//https://leetcode.com/problems/path-sum-iii/solutions/683906/c-dfs-clean-solution-t-89-m-80/
