@@ -2,36 +2,29 @@ class Solution {
 public:
 	int countBattleships(vector<vector<char>>& board) {
 
-		if (board.empty() || board[0].empty())
-		{
-			return 0;
-		}
-
-		int r_size = static_cast<int>(board.size());
-		int c_size = static_cast<int>(board[0].size());
-
 		int ret = 0;
 
-		for (int r = 0; r < r_size; r++)
+		for (int y = 0; y < board.size(); y++)
 		{
-			for (int c = 0; c < c_size; c++)
+			for (int x = 0; x < board[0].size(); x++)
 			{
-				if ('X' != board[r][c])
+				if ('.' == board[y][x])
 				{
 					continue;
 				}
 
-				if (r != 0 && 'X' == board[r - 1][c])
+				if (0 < y && 'X' == board[y - 1][x])
+				{
+					continue;
+				}
+
+				if (0 < x && 'X' == board[y][x - 1])
 				{
 					continue;
 				}
 				
-				if (c != 0 && 'X' == board[r][c - 1])
-				{
-					continue;
-				}
-
 				ret++;
+
 			}
 		}
 

@@ -11,17 +11,21 @@
  */
 class Solution {
 
+	unordered_map<int, int> m;
+	int maxCount = 0;
 
-	int dfs(TreeNode* root, std::unordered_map<int, int>& m)
+	int dfs(TreeNode* root)
 	{
 		if (nullptr == root)
 		{
 			return 0;
 		}
 
-		int sum = root->val + dfs(root->left, m) + dfs(root->right, m);
+		int sum = root->val + dfs(root->left) + dfs(root->right);
 
 		m[sum]++;
+
+		maxCount = std::max(maxCount, m[sum]);
 
 		return sum;
 	}
@@ -29,28 +33,20 @@ class Solution {
 public:
 	vector<int> findFrequentTreeSum(TreeNode* root) {
 
-		std::unordered_map<int, int> m;
+		dfs(root);
 
-		dfs(root, m);
+		std::vector<int> ret;
 
-		int max = 0;
-
-		vector<int> ret;
-
-		for (const auto& [n, c] : m)
+		for (const auto& [s, c] : m)
 		{
-			if (c < max)
-				continue;
-
-			if (max < c)
+			if (c == maxCount)
 			{
-				max = c;
-				ret.clear();
+				ret.push_back(s);
 			}
-
-			ret.push_back(n);
 		}
 
 		return ret;
 	}
 };
+
+//https://leetcode.com/problems/most-frequent-subtree-sum/solutions/98675/java-c-python-dfs-find-subtree-sum/
