@@ -55,3 +55,37 @@ public:
 		return ret;
 	}
 };
+
+
+class Solution {
+
+	vector<int> solution;
+
+public:
+	void helper(TreeNode* node, int cl) {
+		if (node == NULL) {
+			return;
+		}
+		if (solution.size() < cl + 1) {
+			solution.push_back(node->val);
+		}
+		else {
+			if (solution[cl] < node->val) {
+				solution[cl] = node->val;
+			}
+		}
+		helper(node->left, cl + 1);
+		helper(node->right, cl + 1);
+	}
+	//vector<int> largestValues(TreeNode* root) {
+	vector<int> findValueMostElement(TreeNode* root) {
+		if (root == NULL) {
+			return solution;
+		}
+
+		helper(root, 0);
+		return solution;
+	}
+};
+
+https://leetcode.com/problems/find-largest-value-in-each-tree-row/solutions/99035/c-a-different-approach-12ms-beats-100/
