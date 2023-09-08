@@ -11,7 +11,7 @@
  */
 class Solution {
 
-	int sum = 0;
+	int mSum = 0;
 
 	int dfs(TreeNode* root)
 	{
@@ -20,22 +20,20 @@ class Solution {
 			return 0;
 		}
 
-		return root->val + dfs(root->left) + dfs(root->right);
+		int l = dfs(root->left);
+		int r = dfs(root->right);
+		mSum += std::abs(l - r);
+
+		return root->val + l + r;
 	}
 
 public:
-    int findTilt(TreeNode* root) {
-		
-		if (nullptr == root)
-		{
-			return 0;
-		}
+	int findTilt(TreeNode* root) {
 
-		sum = abs(dfs(root->left) - dfs(root->right));
-
-		findTilt(root->left);
-		findTilt(root->right);
+		dfs(root);
 
 		return sum;
-    }
+	}
 };
+
+//https://leetcode.com/problems/binary-tree-tilt/editorial/
