@@ -110,3 +110,82 @@ public:
 
 //BST Iterator
 //https://leetcode.com/problems/two-sum-iv-input-is-a-bst/solutions/106063/c-clean-code-o-n-time-o-lg-n-space-binarytree-iterator/
+
+
+
+
+class BSTIterator {
+	stack<TreeNode*> s;
+	TreeNode* node;
+	bool forward;
+	int cur;
+public:
+	BSTIterator(TreeNode* root, bool forward) : node(root), forward(forward) { (*this)++; };
+	int operator*() { return cur; }
+	void operator++(int) {
+		while (node || !s.empty()) {
+			if (node) {
+				s.push(node);
+				node = forward ? node->left : node->right;
+			}
+			else {
+				node = s.top();
+				s.pop();
+				cur = node->val;
+				node = forward ? node->right : node->left;
+				break;
+			}
+		}
+	}
+};
+class Solution {
+public:
+	bool findTarget(TreeNode* root, int k) {
+		if (!root) return false;
+		BSTIterator l(root, true);
+		BSTIterator r(root, false);
+		while (*l < *r) {
+			if (*l + *r == k) return true;
+			else if (*l + *r < k) l++;
+			else r++;
+		}
+		return false;
+	}
+};
+
+class BSTIterator
+{
+	TreeNode* node;
+	int cur;
+	std::stack<TreeNode*> s;
+	bool forward = false;
+
+public:
+	BSTIterator(TreeNode* root, bool f)
+		:node(root), forward(f)
+	{
+		(*this)++;
+	}
+	int operator* ()
+	{
+		return cur;
+	}
+	void operator++(int)
+	{
+		while (node || s.size()) {
+			if (node)
+			{
+				s.push(node);
+				node = forward ? node->left : node->right;
+			}
+			else
+			{
+				auto* t = s.top();
+				s.pop();
+				cur = t->val;
+				node = forward ? t->right : t->left;
+				break;
+			}
+		}
+	}
+};
