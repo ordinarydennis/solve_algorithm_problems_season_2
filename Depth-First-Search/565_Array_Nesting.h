@@ -4,44 +4,34 @@ public:
 
 		int ret = 0;
 
-		std::unordered_map<int, int> m;
+		std::unordered_set<int> s;
 
 		for (int i = 0; i < nums.size(); i++)
 		{
-			std::unordered_set<int> s;
-			
+			if (s.count(i))
+				continue;
+
 			int n = nums[i];
 			
-			int k = -1;
+			int start = i;
 
-			while (0 == s.count(n))
+			int count = 0;
+
+			do
 			{
-				s.insert(n);
+				count++;
 
-				n = nums[n];				
+				s.insert(start);
 
-				auto it = m.find(n);
+				start = nums[start];
 
-				if (it != m.end())
-				{
-					k = it->second;
-					break;
-				}
-				
-			}
-			
-			if (-1 < k)
-			{
-				ret = std::max(k, ret);
-			}
-			else
-			{
-				ret = std::max(static_cast<int>(s.size()), ret);
-			}
+			} while (n != nums[start]);
 
-			m.emplace(i, ret);
+			ret = std::max(ret, count);
 		}
 
 		return ret;
 	}
 };
+
+//https://leetcode.com/problems/array-nesting/editorial/
