@@ -4,24 +4,18 @@ class Solution {
 	{
 		if (curDepth == depth)
 		{
+			TreeNode* l = nullptr;
+			TreeNode* r = nullptr;
+
 			if (nullptr == root)
 			{
-				return new TreeNode(val, nullptr, nullptr);
+				return new TreeNode(val, l, r);
 			}
 			else
 			{
-				TreeNode* l = nullptr;
-				TreeNode* r = nullptr;
-				if (1 == left)
-				{
-					l = root;
-					return new TreeNode(val, l, r);
-				}
-				else if (2 == left)
-				{
-					r = root;
-					return new TreeNode(val, l, r);
-				}
+				auto** t = (1 == left) ? &l : &r;
+				*t = root;
+				return new TreeNode(val, l, r);
 			}
 		}
 
@@ -37,7 +31,7 @@ class Solution {
 public:
 	TreeNode* addOneRow(TreeNode* root, int val, int depth) {
 
-		dfs(root, 1, val, depth, 0);
+		root = dfs(root, 1, val, depth, 1);
 
 		return root;
 
