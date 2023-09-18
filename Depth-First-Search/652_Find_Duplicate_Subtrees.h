@@ -11,50 +11,17 @@
  */
 class Solution {
 
-	vector<vector<TreeNode*>> mR;
+	std::unordered_map<string, vector<TreeNode*>> m;
 
-	vector<TreeNode*> dfs(TreeNode* root)
+	string dfs(TreeNode* root)
 	{
 		if (nullptr == root)
-		{
-			return {};
-		}
+			return "";
 
-		const auto& l = dfs(root->left);
-		const auto& r = dfs(root->right);
+		string ret = "(" + dfs(root->left) + to_string(root->val) + dfs(root->right) + ")";
 
-		int li = 0;
-		int ri = 0;
+		m[ret].push_back(root);
 
-		vector<TreeNode*> vList;
-
-		while (li < l.size() && ri < r.size())
-		{
-			if (l[li]->val == r[ri]->val)
-			{
-				vList.push_back(l[li]);
-			}
-			
-			li++;
-			ri++;
-		}
-
-		if (vList.size())
-		{
-			mR.push_back(std::move(vList));
-		}
-
-		vector<TreeNode*> ret;
-
-		ret = std::move(l);
-
-		ret.push_back(root);
-
-		for (auto* e : r)
-		{
-			ret.push_back(e);
-		}
-	
 		return ret;
 	}
 
@@ -64,7 +31,17 @@ public:
 
 		dfs(root);
 
-		return mR;
-		
+		vector<TreeNode*> ret;
+
+		for (const auto& [k, list] : m)
+		{
+			if (list.size() > 1)
+				ret.push_back(list[0]);				
+		}
+
+		return ret;
 	}
 };
+
+
+https://leetcode.com/problems/find-duplicate-subtrees/solutions/106055/c-java-clean-code-with-explanation/
