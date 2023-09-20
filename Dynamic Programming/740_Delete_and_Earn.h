@@ -1,51 +1,47 @@
 class Solution {
 
-	int max = 0;
+	std::unordered_map<int, int> m;
 
-	void dfs(const vector<int>& nums, std::unordered_set<int>& memo, int sum, vector<bool>& checked, int next)
+	int dfs(const vector<int>& nums, int index)
 	{
-		if (nums.size() <= next)
+		if (m.count(index))
 		{
-			max = std::max(max, sum);
-			return;
+			return m[index];
 		}
-		
-		for (int i = 0; i < nums.size(); i++)
+
+		if (nums.size() <= index)
 		{
-			if (checked[i])
-			{
-				continue;
-			}
-
-			if (memo.count(nums[i]))
-			{
-				continue;
-			}
-
-			memo.insert(nums[i] - 1);
-			memo.insert(nums[i] + 1);
-
-			checked[i] = true;
-
-			dfs(nums, memo, nums[i] + sum, checked, i + 1);
-
-			checked[i] = false;
-
-			memo.erase(nums[i] - 1);
-			memo.erase(nums[i] + 1);
+			return 0;
 		}
+
+		int cur = nums[index];
+		int i = index + 1;
+		int sum = cur;
+
+		while (i < nums.size() && cur ==  nums[i])
+		{
+			sum += nums[i];
+			i++;
+		}
+
+		while (i < nums.size() && cur + 1 == nums[i])
+		{
+			i++;
+		}
+
+		m[index] = std::max(sum + dfs(nums, i), dfs(nums, index + 1));
+
+		return m[index];
 	}
 
 
 public:
 	int deleteAndEarn(vector<int>& nums) {
 
-		std::unordered_set<int> memo;
+		std::sort(nums.begin(), nums.end());
 
-		vector<bool> checked(nums.size(), false);
-
-		dfs(nums, memo, 0, checked, 0);
-
-		return max;
+		return dfs(nums, 0);
 	}
 };
+
+https://leetcode.com/problems/delete-and-earn/solutions/1820279/c-detailed-explanation-w-recursion-to-memoziation-understand-concept/
