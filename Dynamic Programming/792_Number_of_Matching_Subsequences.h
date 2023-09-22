@@ -1,33 +1,56 @@
-class Solution {
 
-	int ret = 0;
+struct Node
+{
+	int mIndex = 0;
+	string mS;
 
-	void dfs(string& word, int wIndex, string& s, int sIndex)
+	Node(int index, const string& s)
+		:mIndex(index), mS(s)
 	{
-		if (wIndex <= word.size())
-		{
-			ret++;
-			return;
-		}
-
-		for (int i = sIndex; i < s.size(); i++)
-		{
-			if (s[i] == word[wIndex])
-			{
-				dfs(word, i + 1, s, sIndex + 1);
-			}
-		}
 
 	}
+};
 
+
+
+class Solution {
 public:
-	int numMatchingSubseq(string s, vector<string>& words) {
+	int numMatchingSubseq(string S, vector<string>& words) {
 
-		for (auto& word : words)
+		vector<Node> bucket[26];
+
+		for (auto& w : words)
 		{
-			dfs(word, 0, s, 0);
+			bucket[w[0] - 'a'].emplace_back(0, w);
+		}
+
+		int ret = 0;
+
+		for (char c : S)
+		{
+			auto temp = std::move(bucket[c - 'a']);
+
+			for (auto& node : temp)
+			{
+				node.mIndex++;
+
+				if (node.mIndex == node.mS.size())
+				{
+					ret++;
+				}
+				else
+				{
+					bucket[node.mS[node.mIndex] - 'a'].push_back(node);
+				}
+			}
+
 		}
 
 		return ret;
+
 	}
 };
+
+//leetcode.com/problems/number-of-matching-subsequences/solutions/1290406/c-java-python-process-by-bucket-picture-explain-o-n-s/
+//leetcode.com/problems/number-of-matching-subsequences/solutions/117634/efficient-and-simple-go-through-words-in-parallel-with-explanation/
+
