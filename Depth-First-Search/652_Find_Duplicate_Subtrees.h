@@ -11,37 +11,38 @@
  */
 class Solution {
 
-	std::unordered_map<string, vector<TreeNode*>> m;
-
-	string dfs(TreeNode* root)
+	string dfs(TreeNode* root, unordered_map<string, std::vector<TreeNode*>>& treeMap)
 	{
 		if (nullptr == root)
+		{
 			return "";
+		}
 
-		string ret = "(" + dfs(root->left) + to_string(root->val) + dfs(root->right) + ")";
+		string ls = dfs(root->left, treeMap);
+		string rs = dfs(root->right, treeMap);
 
-		m[ret].push_back(root);
+		auto result = "(" + ls + to_string(root->val) + rs + ")";
 
-		return ret;
+		treeMap[result].push_back(root);
+
+		return result;
 	}
-
 
 public:
 	vector<TreeNode*> findDuplicateSubtrees(TreeNode* root) {
 
-		dfs(root);
+		unordered_map<string, std::vector<TreeNode*>> treeMap;
 
-		vector<TreeNode*> ret;
+		dfs(root, treeMap);
 
-		for (const auto& [k, list] : m)
+		std::vector<TreeNode*> ret;
+
+		for (auto it : treeMap)
 		{
-			if (list.size() > 1)
-				ret.push_back(list[0]);				
+			if (2 <= it.second.size())
+				ret.push_back(it.second[0]);
 		}
 
 		return ret;
 	}
 };
-
-
-https://leetcode.com/problems/find-duplicate-subtrees/solutions/106055/c-java-clean-code-with-explanation/
