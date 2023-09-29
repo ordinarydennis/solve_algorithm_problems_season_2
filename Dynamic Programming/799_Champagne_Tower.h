@@ -2,27 +2,26 @@ class Solution {
 public:
     double champagneTower(int poured, int query_row, int query_glass) {
 
-        int totalCount = 0;
-        int preTotalCount = 0;
+        vector<double> currRow(1, poured);
 
         for (int i = 0; i <= query_row; i++)
-        {
-            totalCount += i + 1;
-
-            if (i == query_row - 1)
-            {
-                preTotalCount = totalCount;
+        { 
+            vector<double> nextRow(i + 2, 0); 
+            for (int j = 0; j <= i; j++) 
+            { 
+                if (currRow[j] >= 1)
+                { 
+                    nextRow[j] += (currRow[j] - 1) / 2.0;
+                    nextRow[j + 1] += (currRow[j] - 1) / 2.0; 
+                    currRow[j] = 1;
+                }
             }
+            if (i != query_row) 
+                currRow = nextRow;
         }
-
-        int remain = poured - preTotalCount;
-
-
-        int needTo = totalCount - preTotalCount;
-
-        double ret = static_cast<double>(remain) / needTo;
-
-        return (1.0f < ret) ? 1.0f : ret;
-
+        return currRow[query_glass];
     }
 };
+
+
+//https://leetcode.com/problems/champagne-tower/solutions/1818599/full-visual-explanation-dp-beginner-friendly-easy-and-simple-c/
