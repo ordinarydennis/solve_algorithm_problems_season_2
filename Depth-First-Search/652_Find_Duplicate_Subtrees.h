@@ -11,19 +11,19 @@
  */
 class Solution {
 
-	string dfs(TreeNode* root, unordered_map<string, std::vector<TreeNode*>>& treeMap)
+	string dfs(TreeNode* root, unordered_map<string, vector<TreeNode*>>& memo)
 	{
 		if (nullptr == root)
 		{
 			return "";
 		}
 
-		string ls = dfs(root->left, treeMap);
-		string rs = dfs(root->right, treeMap);
+		string l = dfs(root->left, memo);
+		string r = dfs(root->right, memo);
 
-		auto result = "(" + ls + to_string(root->val) + rs + ")";
+		string result = "(" + l + to_string(root->val) + r + ")";
 
-		treeMap[result].push_back(root);
+		memo[result].push_back(root);
 
 		return result;
 	}
@@ -31,16 +31,18 @@ class Solution {
 public:
 	vector<TreeNode*> findDuplicateSubtrees(TreeNode* root) {
 
-		unordered_map<string, std::vector<TreeNode*>> treeMap;
+		vector<TreeNode*> ret;
 
-		dfs(root, treeMap);
+		unordered_map<string, vector<TreeNode*>> memo;
 
-		std::vector<TreeNode*> ret;
+		dfs(root, memo);
 
-		for (auto it : treeMap)
+		for (const auto& [_, list] : memo)
 		{
-			if (2 <= it.second.size())
-				ret.push_back(it.second[0]);
+			if (list.size() >= 2)
+			{
+				ret.push_back(list[0]);
+			}
 		}
 
 		return ret;
