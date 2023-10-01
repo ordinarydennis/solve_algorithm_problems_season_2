@@ -1,27 +1,30 @@
 class Solution {
 public:
-    double champagneTower(int poured, int query_row, int query_glass) {
+	double champagneTower(int poured, int query_row, int query_glass) {
 
-        vector<double> currRow(1, poured);
+		std::vector<double> cur(1, poured);
 
-        for (int i = 0; i <= query_row; i++)
-        { 
-            vector<double> nextRow(i + 2, 0); 
-            for (int j = 0; j <= i; j++) 
-            { 
-                if (currRow[j] >= 1)
-                { 
-                    nextRow[j] += (currRow[j] - 1) / 2.0;
-                    nextRow[j + 1] += (currRow[j] - 1) / 2.0; 
-                    currRow[j] = 1;
-                }
-            }
-            if (i != query_row) 
-                currRow = nextRow;
-        }
-        return currRow[query_glass];
-    }
+		for (int i = 0; i <= query_row; i++)
+		{
+			std::vector<double> next(i + 2);
+
+			for (int a = 0; a <= i; a++)
+			{
+				if (1 <= cur[a])
+				{
+					next[a] = (cur[a] - 1) / 2.0;
+					next[a + 1] = (cur[a] - 1) / 2.0;
+					cur[a] = 1;
+				}
+			}
+
+			if (i != query_row)
+			{
+				cur = next;
+			}
+		}
+
+		return cur[query_glass];
+
+	}
 };
-
-
-//https://leetcode.com/problems/champagne-tower/solutions/1818599/full-visual-explanation-dp-beginner-friendly-easy-and-simple-c/
