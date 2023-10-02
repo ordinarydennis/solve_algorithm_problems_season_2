@@ -1,56 +1,51 @@
-
 struct Node
 {
-	int mIndex = 0;
-	string mS;
-
-	Node(int index, const string& s)
-		:mIndex(index), mS(s)
-	{
-
-	}
+	string w;
+	int index = 0;
 };
-
-
 
 class Solution {
 public:
-	int numMatchingSubseq(string S, vector<string>& words) {
+	int numMatchingSubseq(string s, vector<string>& words) {
 
-		vector<Node> bucket[26];
-
-		for (auto& w : words)
-		{
-			bucket[w[0] - 'a'].emplace_back(0, w);
-		}
+		std::unordered_map<char, vector<Node>> m;
 
 		int ret = 0;
 
-		for (char c : S)
+		for (const auto& w: words)
 		{
-			auto temp = std::move(bucket[c - 'a']);
+			m[w[0]].emplace_back(Node{ w , 0 });
+		}
 
-			for (auto& node : temp)
+		for (char c : s)
+		{
+			auto it = m.find(c);
+
+			if (it == m.end())
 			{
-				node.mIndex++;
+				continue;
+			}
+			
+			auto& nodeList = it->second;
 
-				if (node.mIndex == node.mS.size())
+			auto temp = nodeList;
+
+			m.erase(it);
+
+			for (auto node : temp)
+			{
+				node.index++;
+
+				if (node.w.size() <= node.index)
 				{
 					ret++;
+					continue;
 				}
-				else
-				{
-					bucket[node.mS[node.mIndex] - 'a'].push_back(node);
-				}
-			}
 
+				m[node.w[node.index]].push_back(node);
+			}
 		}
 
 		return ret;
-
 	}
 };
-
-//leetcode.com/problems/number-of-matching-subsequences/solutions/1290406/c-java-python-process-by-bucket-picture-explain-o-n-s/
-//leetcode.com/problems/number-of-matching-subsequences/solutions/117634/efficient-and-simple-go-through-words-in-parallel-with-explanation/
-
