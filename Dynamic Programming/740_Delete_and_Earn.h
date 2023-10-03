@@ -1,39 +1,35 @@
 class Solution {
 
-	std::unordered_map<int, int> m;
+	std::unordered_map<int, int> memo;
 
 	int dfs(const vector<int>& nums, int index)
 	{
-		if (m.count(index))
+		if (0 < memo[index])
 		{
-			return m[index];
+			return memo[index];
 		}
 
 		if (nums.size() <= index)
-		{
 			return 0;
-		}
 
-		int cur = nums[index];
-		int i = index + 1;
-		int sum = cur;
+		int sum = 0;
+		int i = index;
 
-		while (i < nums.size() && cur ==  nums[i])
+		while (i < nums.size() && nums[i] == nums[index])
 		{
 			sum += nums[i];
 			i++;
 		}
 
-		while (i < nums.size() && cur + 1 == nums[i])
+		while (i < nums.size() && nums[i] == nums[index] + 1)
 		{
 			i++;
 		}
 
-		m[index] = std::max(sum + dfs(nums, i), dfs(nums, index + 1));
+		memo[index] = std::max(sum + dfs(nums, i), dfs(nums, index + 1));
 
-		return m[index];
+		return memo[index];
 	}
-
 
 public:
 	int deleteAndEarn(vector<int>& nums) {
@@ -44,4 +40,4 @@ public:
 	}
 };
 
-https://leetcode.com/problems/delete-and-earn/solutions/1820279/c-detailed-explanation-w-recursion-to-memoziation-understand-concept/
+// https://leetcode.com/problems/delete-and-earn/solutions/1820279/c-detailed-explanation-w-recursion-to-memoziation-understand-concept/
