@@ -1,39 +1,52 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
 class Solution {
 
-	TreeNode* dfs(TreeNode* root, int curDepth, int val, int depth, int left)
-	{
-		if (curDepth == depth)
-		{
-			TreeNode* l = nullptr;
-			TreeNode* r = nullptr;
+    TreeNode* dfs(TreeNode* root, int val, int depth, bool isLeft)
+    {
+        if (depth < 0)
+        {
+            return nullptr;
+        }
 
-			if (nullptr == root)
-			{
-				return new TreeNode(val, l, r);
-			}
-			else
-			{
-				auto** t = (1 == left) ? &l : &r;
-				*t = root;
-				return new TreeNode(val, l, r);
-			}
-		}
+        if (0 == depth)
+        {
+            auto* newNode = new TreeNode(val);
 
-		if (root)
-		{
-			root->left = dfs(root->left, curDepth + 1, val, depth, 1);
-			root->right = dfs(root->right, curDepth + 1, val, depth, 2);
-		}
+            if (root)
+            {
+				if (isLeft)
+				{
+					newNode->left = root->left;
+				}
+				else
+				{
+                    newNode->right = root->right;
+				}
+            }
 
-		return root;
-	}
+            return newNode;
+        }
+
+       root->left = dfs(root->left, val, depth - 1, true);
+       root->right = dfs(root->right, val, depth - 1, false);
+
+        return root;
+    }
+
 
 public:
-	TreeNode* addOneRow(TreeNode* root, int val, int depth) {
+    TreeNode* addOneRow(TreeNode* root, int val, int depth) {
 
-		root = dfs(root, 1, val, depth, 1);
-
-		return root;
-
-	}
+        return dfs(root, val, depth - 1, true);
+    }
 };
