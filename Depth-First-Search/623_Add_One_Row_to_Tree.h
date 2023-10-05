@@ -10,43 +10,57 @@
  * };
  */
 class Solution {
+public:
+	TreeNode* addOneRow(TreeNode* root, int val, int depth) {
 
-    TreeNode* dfs(TreeNode* root, int val, int depth, bool isLeft)
-    {
-        if (depth < 0)
-        {
-            return nullptr;
-        }
+		if (1 == depth)
+		{
+			auto* node = new TreeNode(val);
+			node->left = root;
+			return node;
+		}
 
-        if (0 == depth)
-        {
-            auto* newNode = new TreeNode(val);
+		std::queue<TreeNode*> q;
+		q.push(root);
 
-            if (root)
-            {
-				if (isLeft)
+		while (q.size())
+		{
+			auto size = q.size();
+
+			while (size--)
+			{
+				auto* node = q.front();
+
+				q.pop();
+
+				if (2 < depth)
 				{
-					newNode->left = root->left;
+					if (node->left)
+					{
+						q.push(node->left);
+					}
+					if (node->right)
+					{
+						q.push(node->right);
+					}
 				}
 				else
 				{
-                    newNode->right = root->right;
+					auto* leftNode = new TreeNode(val);
+					auto* leftTemp = node->left;
+					node->left = leftNode;
+					leftNode->left = leftTemp;
+
+					auto* rightNode = new TreeNode(val);
+					auto* rightTemp = node->right;
+					node->right = rightNode;
+					rightNode->right = rightTemp;
 				}
-            }
+			}
 
-            return newNode;
-        }
+			--depth;
+		}
 
-       root->left = dfs(root->left, val, depth - 1, true);
-       root->right = dfs(root->right, val, depth - 1, false);
-
-        return root;
-    }
-
-
-public:
-    TreeNode* addOneRow(TreeNode* root, int val, int depth) {
-
-        return dfs(root, val, depth - 1, true);
-    }
+		return root;
+	}
 };
