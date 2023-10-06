@@ -1,37 +1,37 @@
 class Solution {
 public:
-	int arrayNesting(vector<int>& nums) {
+    int arrayNesting(vector<int>& nums) {
 
-		int ret = 0;
+        int ret = 0;
 
-		std::unordered_set<int> s;
+        std::unordered_set<int> memo;
 
-		for (int i = 0; i < nums.size(); i++)
-		{
-			if (s.count(i))
-				continue;
+        for (int i = 0; i < nums.size(); i++)
+        {
+            if (memo.count(i))
+            {
+                continue;
+            }
 
-			int n = nums[i];
-			
-			int start = i;
+            int first = nums[i];
 
-			int count = 0;
+            int nIndex = i;
 
-			do
-			{
-				count++;
+            int count = 0;
+            
+            do           
+            {
+                memo.insert(nIndex);
 
-				s.insert(start);
+                nIndex = nums[nIndex];
+             
+                count++;
 
-				start = nums[start];
+            } while (first != nums[nIndex]);
 
-			} while (n != nums[start]);
+            ret = std::max(ret, count);
+        }
 
-			ret = std::max(ret, count);
-		}
-
-		return ret;
-	}
+        return ret;
+    }
 };
-
-//https://leetcode.com/problems/array-nesting/editorial/
