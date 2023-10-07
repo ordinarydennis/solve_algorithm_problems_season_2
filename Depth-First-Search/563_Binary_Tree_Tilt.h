@@ -11,29 +11,30 @@
  */
 class Solution {
 
-	int mSum = 0;
-
-	int dfs(TreeNode* root)
+	int traversal(TreeNode* root, int& sum)
 	{
 		if (nullptr == root)
 		{
 			return 0;
 		}
 
-		int l = dfs(root->left);
-		int r = dfs(root->right);
-		mSum += std::abs(l - r);
+		int l = traversal(root->left, sum);
+		int r = traversal(root->right, sum);
+
+		sum += abs(l - r);
 
 		return root->val + l + r;
 	}
 
+
 public:
 	int findTilt(TreeNode* root) {
 
-		dfs(root);
+		int sum = 0;
+
+		traversal(root, sum);
 
 		return sum;
+
 	}
 };
-
-//https://leetcode.com/problems/binary-tree-tilt/editorial/

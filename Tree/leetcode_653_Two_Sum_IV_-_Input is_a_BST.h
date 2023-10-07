@@ -11,29 +11,49 @@
  */
 class Solution {
 
-    bool traversal(TreeNode* root, int k, int count)
-    {
-        if (2 == count)
-        {
-            return (root->val == k);
-        }
+	std::vector<int> list;
 
-        if (root->val < k)
-        {
-            traversal(root->right, k, count + 1)
-        }
-        else
-        {
-            traversal(root->left, k, count + 1)
-        }
+	void traversal(TreeNode* root, std::vector<int>& list)
+	{
+		if (nullptr == root)
+		{
+			return;
+		}
 
+		traversal(root->left, list);
 
-    }
+		list.push_back(root->val);
+
+		traversal(root->right, list);
+
+	}
 
 public:
-    bool findTarget(TreeNode* root, int k) {
+	bool findTarget(TreeNode* root, int k) {
 
-        return traversal(root, k, 1);
+		std::vector<int> list;
 
-    }
+		traversal(root, list);
+
+		int l = 0;
+		int r = static_cast<int>(list.size()) - 1;
+
+		while (l < r)
+		{
+			if (k == list[l] + list[r])
+			{
+				return true;
+			}
+			if (k < list[l] + list[r])
+			{
+				r--;
+			}
+			else
+			{
+				l++;
+			}
+		}
+
+		return false;
+	}
 };

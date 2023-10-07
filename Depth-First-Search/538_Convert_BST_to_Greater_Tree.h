@@ -11,32 +11,32 @@
  */
 class Solution {
 
-	int mSum = 0;
+    int sum = 0;
 
+    void traversal(TreeNode* root)
+    {
+        if (nullptr == root)
+        {
+            return;
+        }
 
-	void dfs(TreeNode* root)
-	{
-		if (nullptr == root)
-		{
-			return;
-		}
+        traversal(root->right);
 
-		dfs(root->right);
+        root->val += sum;
 
-		root->val += mSum;
+        sum = root->val;
 
-		mSum = root->val;
+        traversal(root->left);
 
-		dfs(root->left);
-	}
+        return;
+    }
+
 
 public:
-	TreeNode* convertBST(TreeNode* root) {
+    TreeNode* convertBST(TreeNode* root) {
 
-		dfs(root);
+        traversal(root);
 
-		return root;
-	}
+        return root;
+    }
 };
-
-//https://leetcode.com/problems/convert-bst-to-greater-tree/solutions/100610/c-solution-beats-100/
