@@ -10,82 +10,36 @@
  * };
  */
 class Solution {
+
+	void traversal(TreeNode* root, int d, std::map<int, int>& memo)
+	{
+		if (nullptr == root)
+			return;
+
+		auto it = memo.find(d);
+
+		memo[d] = (memo.end() == it) ? root->val : std::max(root->val, it->second);
+
+		traversal(root->left, d + 1, memo);
+		traversal(root->right, d + 1, memo);
+	}
+
+
 public:
 	vector<int> largestValues(TreeNode* root) {
 
-		if (nullptr == root)
-		{
-			return {};
-		}
+		std::map<int, int> memo;
 
-		std::queue<TreeNode*> q;
+		traversal(root, 0, memo);
 
-		vector<int> ret;
+		std::vector<int> ret;
+		ret.reserve(memo.size());
 
-		q.push(root);
-
-		while (q.size())
-		{
-			int s = static_cast<int>(q.size());
-
-			int max = INT_MIN;
-
-			for (int i = 0; i < s; i++)
-			{
-				const auto* node = q.front();
-
-				max = std::max(max, node->val);
-
-				q.pop();
-
-				if (node->left)
-				{
-					q.push(node->left);
-				}
-
-				if (node->right)
-				{
-					q.push(node->right);
-				}
+		std::for_each(memo.begin(), memo.end(), [&ret](const auto& pair) { 
+			ret.push_back(pair.second); 
 			}
-
-			ret.push_back(max);
-		}
+		);
 
 		return ret;
 	}
 };
-
-
-class Solution {
-
-	vector<int> solution;
-
-public:
-	void helper(TreeNode* node, int cl) {
-		if (node == NULL) {
-			return;
-		}
-		if (solution.size() < cl + 1) {
-			solution.push_back(node->val);
-		}
-		else {
-			if (solution[cl] < node->val) {
-				solution[cl] = node->val;
-			}
-		}
-		helper(node->left, cl + 1);
-		helper(node->right, cl + 1);
-	}
-	//vector<int> largestValues(TreeNode* root) {
-	vector<int> findValueMostElement(TreeNode* root) {
-		if (root == NULL) {
-			return solution;
-		}
-
-		helper(root, 0);
-		return solution;
-	}
-};
-
-https://leetcode.com/problems/find-largest-value-in-each-tree-row/solutions/99035/c-a-different-approach-12ms-beats-100/

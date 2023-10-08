@@ -13,27 +13,29 @@ class Solution {
 
     int count = 0;
 
-    void dfs(TreeNode* root, long long sum, int targetSum)
+    void traversal(TreeNode* root, int targetSum, int sum)
     {
         if (nullptr == root)
         {
-            return;
+            return ;
         }
 
-        if (root->val + sum == targetSum)
+        sum += root->val;
+
+        if (targetSum == sum)
         {
             count++;
         }
 
-        dfs(root->left, root->val + sum, targetSum);
-        dfs(root->right, root->val + sum, targetSum);
+        traversal(root->left, targetSum, sum);
+        traversal(root->right, targetSum, sum);
     }
 
 public:
     int pathSum(TreeNode* root, int targetSum) {
 
-        dfs(root, 0, targetSum);
-        
+        traversal(root, targetSum, 0);
+
         if (root)
         {
             pathSum(root->left, targetSum);
@@ -43,5 +45,3 @@ public:
         return count;
     }
 };
-
-//https://leetcode.com/problems/path-sum-iii/solutions/683906/c-dfs-clean-solution-t-89-m-80/
