@@ -2,34 +2,28 @@ class Solution {
 public:
 	int countBattleships(vector<vector<char>>& board) {
 
-		int ret = 0;
+		int maxY = board.size();
+		int maxX = board[0].size();
 
-		for (int y = 0; y < board.size(); y++)
+		int ret = 0;
+		
+		for (int y = 0; y < maxY; y++)
 		{
-			for (int x = 0; x < board[0].size(); x++)
+			for (int x = 0; x < maxX; x++)
 			{
 				if ('.' == board[y][x])
-				{
 					continue;
-				}
 
 				if (0 < y && 'X' == board[y - 1][x])
-				{
 					continue;
-				}
 
 				if (0 < x && 'X' == board[y][x - 1])
-				{
 					continue;
-				}
-				
-				ret++;
 
+				ret++;
 			}
 		}
 
 		return ret;
 	}
 };
-
-//https://leetcode.com/problems/battleships-in-a-board/solutions/90909/c-3ms-6-lines-solution-with-runtime-o-n-and-space-o-1/

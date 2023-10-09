@@ -10,15 +10,14 @@
  * };
  */
 class Solution {
-
 public:
 	bool evaluateTree(TreeNode* root) {
 
 		if (root->val <= 1)
 			return root->val;
-
+	 
 		return (2 == root->val) ? 
-			evaluateTree(root->left) || evaluateTree(root->right) : 
-			evaluateTree(root->left) && evaluateTree(root->right);
+			evaluateTree(root->left) || evaluateTree(root->right) :
+			evaluateTree(root->left) && evaluateTree(root->right)
 	}
 };

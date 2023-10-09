@@ -1,17 +1,21 @@
 class Solution {
 
-	void dfs(int num, int max, vector<int>& result)
+	void dfs(int cur, int max, vector<int>& list)
 	{
-		if (max < num)
+		if (max < cur)
 			return;
 
-		result.push_back(num);
+		list.push_back(cur);
 
 		for (int i = 0; i < 10; i++)
 		{
-			dfs((num * 10) + i, max, result);
+			if (max <cur * 10 + i)
+				return;
+
+			dfs(cur * 10 + i, max, list);
 		}
 	}
+
 
 public:
 	vector<int> lexicalOrder(int n) {
@@ -22,9 +26,7 @@ public:
 		{
 			dfs(i, n, ret);
 		}
-
+	
 		return ret;
 	}
 };
-
-//https://leetcode.com/problems/lexicographical-numbers/solutions/3638974/simple-easy-o-n-c-solution-using-recursion-dfs/
