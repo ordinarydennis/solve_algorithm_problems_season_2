@@ -1,46 +1,40 @@
+
+//Approach 1: Brute Force with Set
 class Solution {
-
-	std::unordered_map<int, int> memo;
-
-	void findFibo(vector<int>& arr, int n1, int n2, int index, int& count)
-	{
-		int size = static_cast<int>(arr.size());
-
-		for (int i = index; i < size; i++)
-		{
-			if (n1 + n2 != arr[i])
-				continue;
-
-			count++;
-
-			findFibo(arr, n2, arr[i], i + 1, count);
-
-			break;
-		}
-	}
 
 public:
 	int lenLongestFibSubseq(vector<int>& arr) {
 
+		std::unordered_set<int> m(arr.begin(), arr.end());
+
 		int ret = 0;
 
-		int size = static_cast<int>(arr.size());
-
-		for (int i = 0; i < size - 1; i++)
+		for (int a = 0; a < arr.size(); a++)
 		{
-			for (int a = i + 1; a < size; a++)
+			for (int b = a + 1; b < arr.size() - 1; b++)
 			{
-				int c = 2;
+				int n1 = arr[a];
+				int n2 = arr[b];
+				int f = n1 + n2;
 
-				findFibo(arr, arr[i], arr[a], a + 1, c);
+				int count = 0;
 
-				if (2 < c)
+				while (m.count(f))
 				{
-					ret = std::max(ret, c);
+					n1 = n2;
+					n2 = f;
+					f = n1 + n2;
+
+					count++;
 				}
+
+				ret = std::max(ret, count);
 			}
 		}
+
 		
-		return ret;
+		return 0 == ret ? 0 : ret + 2;
 	}
 };
+
+//https://leetcode.com/problems/length-of-longest-fibonacci-subsequence/editorial/
