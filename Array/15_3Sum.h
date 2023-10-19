@@ -1,29 +1,53 @@
 class Solution {
 public:
-    vector<vector<int>> threeSum(vector<int>& nums) {
+	vector<vector<int> > threeSum(vector<int>& num) {
 
-        vector<vector<int>> ret;
+		vector<vector<int> > res;
 
-        for (int a = 0; a < nums.size() - 2; a++)
-        {
-            for (int b = a + 1; b < nums.size() - 1; b++)
-            {
-                for (int c = b + 1; c < nums.size(); c++)
-                {
-                    if (0 == nums[a] + nums[b] + nums[c])
-                    {
-                        vector<int> v = { nums[a] , nums[b] , nums[c] };
-                        std::sort(v.begin(), v.end());
+		std::sort(num.begin(), num.end());
 
-                        if (std::find(ret.begin(), ret.end(), v) == ret.end())
-                        {
-                            ret.push_back(std::move(v));
-                        }
-                    }
-                }
-            }
-        }
+		for (int i = 0; i < num.size(); i++) {
 
-        return ret;
-    }
+			int target = -num[i];
+			int front = i + 1;
+			int back = num.size() - 1;
+
+			while (front < back) {
+
+				int sum = num[front] + num[back];
+
+				// Finding answer which start from number num[i]
+				if (sum < target)
+					front++;
+
+				else if (sum > target)
+					back--;
+
+				else {
+					vector<int> triplet = { num[i], num[front], num[back] };
+					res.push_back(triplet);
+
+					// Processing duplicates of Number 2
+					// Rolling the front pointer to the next different number forwards
+					while (front < back && num[front] == triplet[1]) front++;
+
+					// Processing duplicates of Number 3
+					// Rolling the back pointer to the next different number backwards
+					while (front < back && num[back] == triplet[2]) back--;
+				}
+
+			}
+
+			// Processing duplicates of Number 1
+			// to avoid same answer.
+			while (i + 1 < num.size() && num[i + 1] == num[i])
+				i++;
+
+		}
+
+		return res;
+
+	}
 };
+
+//https://leetcode.com/problems/3sum/solutions/7402/share-my-ac-c-solution-around-50ms-o-n-n-with-explanation-and-comments/
