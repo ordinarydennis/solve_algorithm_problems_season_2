@@ -1,51 +1,48 @@
 class Solution {
 public:
-	vector<vector<int> > threeSum(vector<int>& num) {
+	vector<vector<int>> threeSum(vector<int>& num) {
 
-		vector<vector<int> > res;
 
 		std::sort(num.begin(), num.end());
 
-		for (int i = 0; i < num.size(); i++) {
+		std::vector<std::vector<int>> ret;
+		int max = static_cast<int>(num.size());
 
-			int target = -num[i];
-			int front = i + 1;
-			int back = num.size() - 1;
+		for (int i = 0; i < max; i++)
+		{
+			int l = i + 1;
+			int r = max - 1;
+			int t = -1 * num[i];
 
-			while (front < back) {
+			while (l < r)
+			{
+				int sum = num[l] + num[r];
 
-				int sum = num[front] + num[back];
+				if (t < sum)
+				{
+					r--;
+				}
+				else if (sum < t)
+				{
+					l++;
+				}
+				else
+				{
+					std::vector<int> triplet = { num[i], num[l], num[r] };
 
-				// Finding answer which start from number num[i]
-				if (sum < target)
-					front++;
+					while (l < r && triplet[1] == num[l]) l++;
 
-				else if (sum > target)
-					back--;
+					while (l < r && triplet[2] == num[r]) r--;
 
-				else {
-					vector<int> triplet = { num[i], num[front], num[back] };
-					res.push_back(triplet);
-
-					// Processing duplicates of Number 2
-					// Rolling the front pointer to the next different number forwards
-					while (front < back && num[front] == triplet[1]) front++;
-
-					// Processing duplicates of Number 3
-					// Rolling the back pointer to the next different number backwards
-					while (front < back && num[back] == triplet[2]) back--;
+					ret.emplace_back(std::move(triplet));
 				}
 
+
+				while (i + 1 < max && num[i] == num[i + 1]) i++;
 			}
-
-			// Processing duplicates of Number 1
-			// to avoid same answer.
-			while (i + 1 < num.size() && num[i + 1] == num[i])
-				i++;
-
 		}
 
-		return res;
+		return ret;
 
 	}
 };
