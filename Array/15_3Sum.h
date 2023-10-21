@@ -48,3 +48,49 @@ public:
 };
 
 //https://leetcode.com/problems/3sum/solutions/7402/share-my-ac-c-solution-around-50ms-o-n-n-with-explanation-and-comments/
+
+
+class Solution {
+public:
+	vector<vector<int>> threeSum(vector<int>& nums) {
+
+		std::sort(nums.begin(), nums.end());
+
+		vector<vector<int>> ret;
+
+		int max = static_cast<int>(nums.size() - 1);
+
+		for (int i = 0; i < nums.size(); i++)
+		{
+			int t = -1 * nums[i];
+			int l = i + 1;
+			int r = max;
+
+			while (l < r)
+			{
+				if (t < nums[l] + nums[r])
+				{
+					r--;
+				}
+				else if (t > nums[l] + nums[r])
+				{
+					l++;
+				}
+				else
+				{
+					std::vector<int> find = { nums[i], nums[l], nums[r] };
+
+					ret.push_back(find);
+
+					while (l < r && find[1] == nums[l]) l++;
+					while (l < r && find[2] == nums[r]) r--;
+				}
+
+				while (i < max && nums[i] == nums[i + 1]) i++;
+			}
+		}
+
+		return ret;
+
+	}
+};
