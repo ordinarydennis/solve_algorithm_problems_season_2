@@ -82,3 +82,36 @@ public:
 		return ret;
 	}
 };
+
+class Solution {
+public:
+	int maxArea(vector<int>& height) {
+
+		int max = height.size() - 1;
+
+		int l = 0;
+
+		int r = max;
+
+		int ret = 0;
+
+		while (l <r)
+		{
+			int h = std::min(height[l], height[r]);
+
+			ret = std::max(ret, h * (r - l));
+
+			if (height[l] < height[r])
+			{
+				l++;
+			}
+			else
+			{
+				r--;
+			}
+		}
+
+		return ret;
+
+	}
+};

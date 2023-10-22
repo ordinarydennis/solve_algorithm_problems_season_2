@@ -94,3 +94,49 @@ public:
 
 	}
 };
+
+
+class Solution {
+public:
+	vector<vector<int>> threeSum(vector<int>& nums) {
+
+		int max = static_cast<int>(nums.size());
+
+		std::sort(nums.begin(), nums.end());
+
+		vector<vector<int>> ret;
+
+		for (int i = 0; i < max; i++)
+		{
+			int target = -1 * nums[i];
+
+			int l = i + 1;
+			int r = max - 1;
+
+			while (l < r)
+			{
+				if (target < nums[l] + nums[r])
+				{
+					r--;
+				}
+				else if (target > nums[l] + nums[r])
+				{
+					l++;
+				}
+				else
+				{
+					std::vector<int> f = { nums[i], nums[l], nums[r] };
+
+					while (l < r && f[1] == nums[l]) l++;
+					while (l < r && f[2] == nums[r]) r--;
+
+					ret.emplace_back(std::move(f));
+				}
+			}
+
+			while (i + 1 < max && nums[i] == nums[i + 1]) i++;
+		}
+
+		return ret;
+	}
+};

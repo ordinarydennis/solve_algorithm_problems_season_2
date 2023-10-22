@@ -68,3 +68,39 @@ public:
 //you need to change the starting point to new point to avoid duplication. 
 //ex "abba"
 
+
+class Solution {
+public:
+	int lengthOfLongestSubstring(string s) {
+
+
+		std::unordered_map<char, int> memo;
+
+		int max = static_cast<int>(s.size());
+
+		int start = -1;
+
+		int ret = 0;
+
+		for (int i = 0; i < max; i++)
+		{
+			const auto& it = memo.find(s[i]);
+
+			if (memo.end() != it)
+			{
+				if (start < it->second)
+				{
+					start = it->second;
+				}	
+			}
+
+			memo[s[i]] = i;
+
+			ret = std::max(ret, i - start);
+		}
+
+
+		return ret;
+	}
+};
+
