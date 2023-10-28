@@ -41,3 +41,54 @@ public:
 		return ret;
 	}
 };
+
+
+class Solution {
+
+	std::unordered_map<char, string> pad = {
+		{ '2', "abc"  },
+		{ '3', "def"  },
+		{ '4', "ghi"  },
+		{ '5', "jkl"  },
+		{ '6', "mno"  },
+		{ '7', "qprs" },
+		{ '8', "tuv"  },
+		{ '9', "wxyz" }
+	};
+
+	void dfs(string& digits, int index, string& s, vector<string>& ret)
+	{
+		if (digits.size() <= index)
+		{
+			ret.push_back(s);
+		}
+
+		const auto& str = pad[digits[index]];
+
+		for (char c : str)
+		{
+			s.push_back(c);
+
+			dfs(digits, index + 1, s, ret);
+
+			s.pop_back();
+		}
+	}
+
+
+public:
+	vector<string> letterCombinations(string digits) {
+
+		if (digits.empty()) return {};
+
+		vector<string> ret;
+
+		string s;
+
+		dfs(digits, 0, s, ret);
+
+		return ret;
+	}
+};
+
+//https://leetcode.com/problems/letter-combinations-of-a-phone-number/solutions/3222449/best-c-2-solution-backtracking-iterative-recursive-one-stop-solution/
