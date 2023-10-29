@@ -71,3 +71,48 @@ public:
 
 
 //https://leetcode.com/problems/length-of-longest-fibonacci-subsequence/editorial/
+
+
+class Solution {
+public:
+	int lenLongestFibSubseq(vector<int>& arr) {
+
+		std::unordered_set<int> ss;
+
+		for (auto n : arr)
+		{
+			ss.insert(n);
+		}
+
+		int ret = 0;
+
+		for (int a = 0; a < arr.size() - 1; a++)
+		{
+			for (int b = a + 1; b < arr.size(); b++)
+			{
+				int f = arr[a];
+				int s = arr[b];
+
+				int c = 0;
+
+				while (ss.count(f + s))
+				{
+					c++;
+					int t = f;
+					f = s;
+					s = t + s;
+				}
+
+				if (0 < c)
+				{
+					ret = max(ret, c + 2);
+				}
+				
+			}
+		}
+
+		return ret;
+	}
+};
+
+[1, 2, 3, 4, 5, 6, 7, 8]

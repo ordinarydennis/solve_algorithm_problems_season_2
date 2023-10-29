@@ -93,3 +93,34 @@ public:
 };
 
 //https://leetcode.com/problems/zigzag-conversion/solutions/3134053/c-faster-than-95-easy-understanding-clean-concise-code/
+
+
+class Solution {
+public:
+	string convert(string s, int numRows) {
+
+		if(1 == numRows) return s;
+
+		vector<string> strList(numRows, "");
+
+		int dir = -1, index = 0;
+
+		for (int i = 0; i  < s.size(); i++)
+		{
+			if (index == 0 || index == numRows - 1) dir *= -1;
+
+			strList[index] += s[i];
+
+			(1 == dir) ? index++ : index--;
+		}
+
+		string ret;
+
+		for (auto& str : strList)
+		{
+			ret += std::move(str);
+		}
+
+		return ret;
+	}
+};

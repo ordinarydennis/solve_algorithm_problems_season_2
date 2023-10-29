@@ -140,3 +140,49 @@ public:
 		return ret;
 	}
 };
+
+class Solution {
+public:
+	vector<vector<int>> threeSum(vector<int>& nums) {
+
+		sort(nums.begin(), nums.end());
+
+		vector<vector<int>> ret;
+
+		for (int i = 0; i < nums.size(); i++)
+		{
+			int t = nums[i] * -1;
+
+			int l = i + 1;
+
+			int r = nums.size() - 1;
+
+			while (l < r)
+			{
+				if (t < nums[l] + nums[r])
+				{
+					r--;
+				}
+				else if (t > nums[l] + nums[r])
+				{
+					l++;
+				}
+				else
+				{
+					vector<int> v = { nums[i], nums[l], nums[r] };
+					
+					while (l < r && nums[l] == v[1]) l++;
+
+					while (l < r && nums[r] == v[2]) r--;
+					
+					ret.push_back(std::move(v));
+				}
+			}
+
+			while (i + 1 < nums.size() && nums[i] == nums[i + 1])
+				i++;
+		}
+
+		return ret;
+	}
+};
