@@ -2,44 +2,35 @@ class Solution {
 public:
 	string countAndSay(int n) {
 
-		std::vector<string> m(n + 5, "");
+		if (1 == n) return "1";
+		if (2 == n) return "11";
 
-		m[1] = "1";
-		m[2] = "11";
-		m[3] = "21";
-		m[4] = "1211";
+		string ret = "11";
 
-		if (n <= 4)
-		{
-			return m[n];
-		}
-
-		string& s = m[n - 1];
-
-		char p = s[0];
 		int count = 1;
 
-		string ret;
-
-		for (int i = 1; i <= s.size(); i++)
+		for (int a = 3; a <= n; a++)
 		{
-			if (i < s.size() && p == s[i])
-			{
-				count++;
-			}
-			else
-			{
-				ret += '0' + count;
-				ret += p;
+			string s;
 
-				if (i < s.size())
+			for (int b = 1; b <= ret.size(); b++)
+			{
+				if (ret[b] == ret[b - 1])
 				{
-					p = s[i];
-					count = 1;
+					count++;
+					continue;
 				}
+
+				s += '0' + count;
+				s += ret[b - 1];
+				count = 1;
 			}
+
+			ret = std::move(s);
 		}
 
 		return ret;
 	}
 };
+
+//https://leetcode.com/problems/count-and-say/solutions/2716207/c-easy-detailed-explaination-optimized/
