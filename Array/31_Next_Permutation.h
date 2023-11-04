@@ -1,3 +1,28 @@
+//second approach
+class Solution {
+
+public:
+	void nextPermutation(vector<int>& nums) {
+
+		int max = nums.size() - 1;
+
+		int i = 0;
+
+		for (i = max - 1; 0 <= i; i--) if (nums[i] < nums[i + 1]) break;
+
+		int n = i;
+
+		while (0 <= n && i + 1 < nums.size() && nums[n] < nums[i + 1]) i++;
+
+		if (0 <= n && i < nums.size()) std::swap(nums[i], nums[n]);
+
+		std::reverse(nums.begin() + n + 1, nums.end());
+
+	}
+};
+
+
+// first approach
 class Solution {
 
 	std::unordered_set<int> memo;
