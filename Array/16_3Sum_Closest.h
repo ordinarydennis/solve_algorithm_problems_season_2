@@ -28,3 +28,44 @@ public:
 		return ret;
 	}
 };
+
+
+class Solution {
+public:
+	int threeSumClosest(vector<int>& nums, int target) {
+
+		int max = static_cast<int>(nums.size());
+
+		std::sort(nums.begin(), nums.end());
+
+		int ret = 0;
+		int min = INT_MAX;
+
+		for (int i = 0; i < max - 2; i++)
+		{
+			int l = i + 1;
+			int r = max - 1;
+
+			while (l < r)
+			{
+				int sum = nums[i] + nums[l] + nums[r];
+				if (std::abs(target - sum) <  min)
+				{
+					min = std::abs(target - sum);
+					ret = sum;
+				}
+				
+				if (sum < target)
+				{
+					l++;
+				}
+				else
+				{
+					r--;
+				}
+			}
+		}
+
+		return ret;
+	}
+};
