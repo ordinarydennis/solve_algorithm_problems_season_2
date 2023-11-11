@@ -2,40 +2,85 @@ class Solution {
 public:
 	vector<int> spiralOrder(vector<vector<int>>& matrix) {
 
-		vector<vector<int> > dirs{ {0, 1}, {1, 0}, {0, -1}, {-1, 0} };
+		int xmin = 0;
+		int xmax = matrix[0].size() - 1;
+		int ymin = 0;
+		int ymax = matrix.size() - 1;
 
-		vector<int> res;
 
-		int nr = matrix.size();    
-		
-		if (nr == 0)
-			return res;
+		int dir = 0;
 
-		int nc = matrix[0].size();  
-		
-		if (nc == 0) 
-			return res;
+		vector<int> ret;
 
-		vector<int> nSteps{ nc, nr - 1 };
-
-		int iDir = 0;   // index of direction.
-
-		int ir = 0, ic = -1;    // initial position
-
-		while (nSteps[iDir % 2])
+		while (true)
 		{
-			for (int i = 0; i < nSteps[iDir % 2]; ++i)
+			if (0 == dir && xmin <= xmax)
 			{
-				ir += dirs[iDir][0]; 
-				ic += dirs[iDir][1];
+				int x = xmin;
 
-				res.push_back(matrix[ir][ic]);
+				while (x <= xmax)
+				{
+					ret.push_back(matrix[ymin][x]);
+					x++;
+				}
+
+				ymin++;
+
+				dir = 1;
 			}
 
-			nSteps[iDir % 2]--;
+			if (1 == dir && ymin < ymax)
+			{
+				int y = ymin;
 
-			iDir = (iDir + 1) % 4;
+				while (y <= ymax)
+				{
+					ret.push_back(matrix[y][xmax]);
+
+					y++;
+				}
+
+				xmax--;
+
+				dir = 2;
+			}
+
+			if (2 == dir && xmin < xmax)
+			{
+				int x = xmax;
+
+				while (xmin <= x)
+				{
+					ret.push_back(matrix[ymax][x]);
+					x--;
+				}
+
+				ymax--;
+
+				dir = 3;
+			}
+
+			if (3 == dir && ymin < ymax)
+			{
+				int y = ymax;
+
+				while (ymin <= y)
+				{
+					ret.push_back(matrix[y][xmin]);
+					y--;
+				}
+
+				xmin++;
+
+				dir = 0;
+			}
+
+			if (ymin == ymax && xmin == xmax)
+			{
+				break;
+			}
 		}
-		return res;
+
+		return ret;
 	}
 };
