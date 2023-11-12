@@ -108,3 +108,33 @@ public:
 		return  ret;
 	}
 };
+
+class Solution {
+public:
+	string multiply(string num1, string num2) {
+
+		if ("0" == num1 || "0" == num2)
+			return "0";
+
+		vector<int> list(num1.size() + num2.size());
+
+		for (int n2 = num2.size() - 1; 0 <= n2; n2--)
+		{
+			for (int n1 = num1.size() - 1; 0 <= n1; n1--)
+			{
+				list[n2 + n1 + 1] += (num1[n1] - '0') * (num2[n2] - '0');
+				list[n2 + n1] += list[n2 + n1 + 1] / 10;
+				list[n2 + n1 + 1] %= 10;
+			}
+		}
+
+		int i = 0;
+		while (i < list.size() && list[i] == 0) i++;
+
+		string ret;
+		for (int a = i; a < list.size(); a++)
+			ret += list[a] + '0';
+
+		return ret;
+	}
+};
