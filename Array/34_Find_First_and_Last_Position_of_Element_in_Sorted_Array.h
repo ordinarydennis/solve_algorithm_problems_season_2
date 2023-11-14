@@ -45,3 +45,44 @@ public:
 		return ret;
     }
 };
+
+
+class Solution {
+public:
+	vector<int> searchRange(vector<int>& nums, int target) {
+
+		int l = 0;
+		int r = nums.size() - 1;
+
+		vector<int> ret = { -1, -1 };
+
+		while (l <= r)
+		{
+			int mid = (l + r) / 2;
+
+			if (target == nums[mid])
+			{
+				int i = 1;
+				while (0 <= mid - i && nums[mid] == nums[mid - i]) i++;
+				ret[0] = mid - i + 1;
+
+				i = 1;
+				while (mid + i < nums.size() && nums[mid] == nums[mid + i]) i++;
+				ret[1] = mid + i - 1;
+
+				break;
+			}
+
+			if (nums[l] <= target && target <= nums[mid])
+			{
+				r = mid;
+			}
+			else
+			{
+				l = mid + 1;
+			}
+		}
+
+		return ret;
+	}
+};
