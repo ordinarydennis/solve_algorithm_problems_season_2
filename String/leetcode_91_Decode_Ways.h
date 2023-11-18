@@ -1,27 +1,32 @@
 class Solution {
 
-	vector<int> dfs(string s, int i)
+	int dfs(string& s, int i)
 	{
-		if (s.size() <= i)
-			return {};
-
-		const auto& list = dfs(s, i + 1);
-
-		for (int n : list)
+		if (s.size() == i)
 		{
-			int num = s[i] * 10 + n;
-
-			if (26 < num)
-			{
-				continue;
-			}
-
-			list.push_back(num);
+			return 1;
 		}
 
-		list.push_back(s[i]);
+		if ('0' == s[i])
+		{
+			return 0;
+		}
 
-		return list;
+		if (s.size() - 1 == i)
+		{
+			return 1;
+		}
+
+		string sub = s.substr(i, 2);
+
+		int way1 = dfs(s, i + 1);
+		int way2 = 0;
+		if (0 < stoi(sub) && stoi(sub) <= 26)
+		{
+			way2 = dfs(s, i + 2);
+		}
+
+		return way1 + way2;
 	}
 
 
@@ -32,3 +37,6 @@ public:
 
 	}
 };
+
+
+//https://leetcode.com/problems/decode-ways/solutions/740182/c-recursion-recursion-with-memoization-dp-explained/
