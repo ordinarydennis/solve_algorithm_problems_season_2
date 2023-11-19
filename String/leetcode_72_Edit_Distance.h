@@ -76,3 +76,47 @@ public:
 };
 
 //https://leetcode.com/problems/edit-distance/solutions/3230662/clean-codes-full-explanation-dynamic-programming-c-java-python3/
+
+
+class Solution {
+public:
+	int minDistance(string word1, string word2) {
+
+		vector<vector<int>> matrix(word1.size() + 1, vector<int>(word2.size() + 1));
+
+		for (int i = 0; i <= word1.size(); i++)
+		{
+			matrix[i][0] = i;
+		}
+
+		for (int i = 0; i <= word2.size(); i++)
+		{
+			matrix[0][i] = i;
+		}
+
+		for (int a = 0; a < word1.size(); a++)
+		{
+			for (int b = 0; b < word2.size(); b++)
+			{
+				if (word1[a] != word2[b])
+				{
+					matrix[a + 1][b + 1] = std::min(
+						{
+							matrix[a + 1][b],
+							matrix[a][b + 1],
+							matrix[a][b],
+						}
+					) + 1;
+				}
+				else
+				{
+					matrix[a + 1][b + 1] = matrix[a][b];
+				}
+			}
+		}
+
+		return matrix[word1.size()][word2.size()];
+	}
+};
+
+https://jino-dev-diary.tistory.com/entry/Algorithm-%EB%AC%B8%EC%9E%A5%EC%9D%98-%EC%9C%A0%EC%82%AC%EB%8F%84-%EB%B6%84%EC%84%9D-%ED%8E%B8%EC%A7%91-%EA%B1%B0%EB%A6%AC-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-Levenshtein-Distance
