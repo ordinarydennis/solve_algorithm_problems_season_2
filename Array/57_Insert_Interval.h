@@ -1,82 +1,28 @@
-Input
-intervals =
-[[1, 3], [6, 9]]
-newInterval =
-[2, 5]
-
-Output
-[[0, 0, 1, 6]]
-Expected
-[[1, 5], [6, 9]]
-
-
-
 class Solution {
 public:
 	vector<vector<int>> insert(vector<vector<int>>& intervals, vector<int>& newInterval) {
 
-
-		if (newInterval.empty())
-			return {};
-
-		int start = newInterval[0];
-		int end = newInterval[1];
-
 		vector<vector<int>> ret;
 
-		vector<int> v(2);
-		bool insert = false;
-		for (int i = 0; i < intervals.size(); i++)
+		int i = 0;
+
+		//determine the starting point
+		while (i < intervals.size() && intervals[i][1] < newInterval[0]) ret.push_back(intervals[i++]);
+
+		//starting point(newInterval[0]) is less than intervals[0]  or intervals[1] 
+		
+		//determine the end point
+		//end point(newInterval[1]) is greater than intervals[0]  or intervals[1] 
+		while (i < intervals.size() && intervals[i][0] <= newInterval[1])
 		{
-			if (insert)
-			{
-				ret.push_back(intervals[i]);
-				continue;
-			}
-
-			if (intervals[i][1] < start)
-			{
-				ret.push_back(intervals[i]);
-			}
-			else
-			{
-				if(intervals[i][0] < start && end < intervals[i][1])
-				{
-					ret.push_back(intervals[i]);
-					insert = true;
-				}
-				else if (end < intervals[i][0])
-				{
-					v.push_back(intervals[i][0]);
-					v.push_back(intervals[i][1]);
-					ret.push_back(std::move(v));
-					insert = true;
-				}
-				else
-				{
-					if (0 == v[0])
-					{
-						v.push_back(intervals[i][0]);
-					}
-					
-					if (end < intervals[i][1])
-					{
-						v.push_back(intervals[i][1]);
-						ret.push_back(std::move(v));
-						insert = true;
-					}
-					else
-					{
-						v.push_back(end);
-						ret.push_back(std::move(v));
-						insert = true;
-					}
-				}
-			}
-
+			newInterval[0] = std::min(newInterval[0], intervals[i][0]);
+			newInterval[1] = std::max(newInterval[1], intervals[i++][1]);
 		}
 
-		return ret;
+		ret.push_back(newInterval);
 
+		while (i < intervals.size()) ret.push_back(intervals[i++]);
+
+		return ret;
 	}
 };
