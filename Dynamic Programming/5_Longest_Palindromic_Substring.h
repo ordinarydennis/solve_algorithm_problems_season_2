@@ -39,3 +39,83 @@ public:
 
 	}
 };
+
+class Solution {
+
+	bool isPalindrome(string& s, int left, int right)
+	{
+		while (left < right && s[left] == s[right])
+		{
+			left++;
+			right--;
+		}
+
+		return s[left] == s[right];
+	}
+
+public:
+	string longestPalindrome(string s) {
+
+		for (int length = s.size(); 0 < length; length--)
+		{
+			for (int start = 0; start <= s.size() - length; start++)
+			{
+				if (isPalindrome(s, start, start + length - 1))
+				{
+					return s.substr(start, length);
+				}
+			}
+		}
+
+		return "";
+	}
+};
+//Time complexity: O(n^3)
+//Space complexity: O(1)
+
+//https://leetcode.com/problems/longest-palindromic-substring/editorial/
+
+
+class Solution {
+
+public:
+	string longestPalindrome(string s) {
+
+		std::vector<std::vector<bool>> mat(s.size(), std::vector<bool>(s.size()));
+		
+		int start = 0;
+		int length = 1;
+
+		for (int i = 0; i < s.size(); i++)
+		{
+			mat[i][i] = true;
+			if (i < s.size() - 1 && s[i] == s[i + 1])
+			{
+				mat[i][i + 1] = true;
+				start = i;
+				length = 2;
+			}
+		}
+			
+
+		for (int l = 3; l <= s.size(); l++)
+		{
+			for (int i = 0; i <= s.size() - l; i++)
+			{
+				int right = i + l - 1;
+
+				if (s[i] == s[right] && mat[i + 1][right - 1])
+				{
+					mat[i][right] = true;
+					start = i;
+					length = l;
+				}
+			}
+		}
+
+		return s.substr(start, length);
+	}
+};
+
+//Time complexity: O(n^2)
+//Space complexity: O(n^2)
