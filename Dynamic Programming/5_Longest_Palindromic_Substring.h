@@ -119,3 +119,43 @@ public:
 
 //Time complexity: O(n^2)
 //Space complexity: O(n^2)
+
+
+
+class Solution {
+public:
+	string longestPalindrome(string s) {
+
+		vector<vector<bool>> mat(s.size(), vector<bool>(s.size()));
+
+		int start = 0;
+		int length = 1;
+
+		for (int i = 0; i < s.size(); i++)
+		{
+			mat[i][i] = true;
+			if (i < s.size() - 1 && s[i] == s[i + 1])
+			{
+				mat[i][i + 1] = true;
+				start = i;
+				length = 2;
+			}
+		}
+
+		for (int l = 3; l <= s.size(); l++)
+		{
+			for (int i = 0; i <= s.size() - l; i++)
+			{
+				int right = i + l - 1;
+				if (s[i] == s[right] && mat[i + 1][right - 1])
+				{
+					mat[i][right] = true;
+					start = i;
+					length = l;
+				}
+			}
+		}
+
+		return s.substr(start, length);
+	}
+};

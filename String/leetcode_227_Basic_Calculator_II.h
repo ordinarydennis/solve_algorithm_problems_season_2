@@ -147,3 +147,58 @@ public:
 };
 
 //https://leetcode.com/problems/basic-calculator-ii/editorial/
+
+class Solution {
+public:
+	int calculate(string s) {
+
+		stack<int> st;
+
+		int num = 0;
+		char op = '+';
+		int ret = 0;
+
+		for (int i = 0; i <= s.size(); i++)
+		{
+			if (i < s.size() < iswspace(s[i])) 
+				continue;
+		
+			if (i < s.size() && isdigit(s[i])) 
+				num = (num * 10) + (s[i] - '0');
+			else
+			{
+				if ('+' == op)
+				{
+					st.push(num);
+				}
+				else if('-' == op)
+				{
+					st.push(-num);
+				}
+				else if ('*' == op)
+				{
+					int t = st.top();
+					st.pop();
+					st.push(t * num);
+				}
+				else
+				{
+					int t = st.top();
+					st.pop();
+					st.push(t / num);
+				}
+
+				op = s[i];
+				num = 0;
+			}
+		}
+
+		while (0 < st.size())
+		{
+			ret += st.top();
+			st.pop();
+		}
+
+		return ret;
+	}
+};
