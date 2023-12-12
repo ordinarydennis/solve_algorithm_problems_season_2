@@ -1,44 +1,43 @@
 class Solution {
 
-	bool dfs(vector<vector<int>>& graph, int start, int index, int count)
+	bool dfs(vector<vector<int>>& graph, int index, vector<int>& colors, int color)
 	{
-		if (graph.size() - 1 == count)
+		if (0 != colors[index])
 		{
-			return true;
+			return (colors[index] == color);
 		}
 
-		for (int i = 0; i < graph[index].size(); i++)
-		{
-			if (start == graph[index][i])
-			{
-				return true;
-			}
-			if (dfs(graph, start, graph[index][i], count + 1))
-			{
-				return true;
-			}
+		colors[index] = color;
 
+		for (const auto& neighbor: graph[index])
+		{
+			if (false == dfs(graph, neighbor, colors, -color))
+			{
+				return false;
+			}
 		}
 
-		return false;
+		return true;
 	}
 
 
 public:
 	bool isBipartite(vector<vector<int>>& graph) {
 
-		for (int a = 0; a < graph.size(); a++)
+		vector<int> colors(graph.size());
+
+		for (int i = 0; i < graph.size(); i++)
 		{
-			for (int b = 0; b < graph[a].size(); b++)
-			{
-				if (dfs(graph, a, graph[a][b], 0))
-				{
-					return false;
-				}
-			}
+			if (colors[i] == 0 && false == dfs(graph, i, colors, 1))
+				return false;
 		}
 
-		return true;
 
+		return true;
 	}
 };
+
+//what is bipartite
+//https://gmlwjd9405.github.io/2018/08/23/algorithm-bipartite-graph.html
+//solution
+//https://leetcode.com/problems/is-graph-bipartite/solutions/3540122/image-explanation-both-bfs-dfs-ways-c-java-python/
