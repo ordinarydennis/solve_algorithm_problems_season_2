@@ -1,39 +1,21 @@
 class Solution {
 public:
-	int removeStones(vector<vector<int>>& stones) {
-
-		map<int, set<int>> mat;
-
-		for (auto s : stones)
-		{
-			mat[s[0]].insert(s[1]);
-			mat[s[1]].insert(s[0]);
-		}
-
-		int ret = 0;
-
-		for (auto sit = stones.rbegin(); sit != stones.rend(); ++sit)
-		{
-			auto it = mat.find((*sit)[0]);
-			auto it2 = mat.find((*sit)[1]);
-
-			if(mat.end() != it)
-			{
-				if (it->second.count((*sit)[1]))
-				{
-					it->second.erase((*sit)[1]);
-					mat[(*sit)[1]].erase((*sit)[0]);
-					ret++;
-				}
-			}
-			else if (mat.end() != it2)
-			{
-				it->second.erase((*sit)[1]);
-				mat[(*it)[0]].erase((*sit)[1]);
-				ret++;
-			}
-		}
-
-		return ret;
-	}
+    int dfs(vector<vector<int>>& stones, int index, vector<bool>& visited, int& n) {
+        visited[index] = true;
+        int result = 0;
+        for (int i = 0; i < n; i++)
+            if (!visited[i] && (stones[i][0] == stones[index][0] || stones[i][1] == stones[index][1]))
+                result += (dfs(stones, i, visited, n) + 1);
+        return result;
+    }
+    int removeStones(vector<vector<int>>& stones) {
+        int n = stones.size();
+        vector<bool>visited(n, 0);
+        int result = 0;
+        for (int i = 0; i < n; i++) {
+            if (visited[i]) { continue; }
+            result += dfs(stones, i, visited, n);
+        }
+        return result;
+    }
 };
