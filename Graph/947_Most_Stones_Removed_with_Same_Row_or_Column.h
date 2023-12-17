@@ -1,6 +1,7 @@
 class Solution {
 public:
-    int dfs(vector<vector<int>>& stones, int index, vector<bool>& visited, int& n) {
+    int dfs(vector<vector<int>>& stones, int index, vector<bool>& visited, int& n)
+    {
         visited[index] = true;
         int result = 0;
         for (int i = 0; i < n; i++)
@@ -8,7 +9,8 @@ public:
                 result += (dfs(stones, i, visited, n) + 1);
         return result;
     }
-    int removeStones(vector<vector<int>>& stones) {
+    int removeStones(vector<vector<int>>& stones)
+    {
         int n = stones.size();
         vector<bool>visited(n, 0);
         int result = 0;
@@ -19,3 +21,4 @@ public:
         return result;
     }
 };
+
