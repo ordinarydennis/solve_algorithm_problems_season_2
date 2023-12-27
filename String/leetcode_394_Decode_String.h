@@ -40,73 +40,39 @@ public:
 	return ret;
 };
 
+
 class Solution {
 public:
 	string decodeString(string s) {
-
-		stack<int> ns;
-		stack<string> nstr;
-
-		string base;
-
-		string ret;
-
-		string str;
-
-		for (int i = 0; i < s.size(); i++k)
-		{
-			char c = s[i];
-
-			if (isdigit(c))
-			{
-				ns.push(c - '0');
-
-				if (base.size())
-				{
-					nstr.push(std::move(base));
-				}
+		stack<string> chars;
+		stack<int> nums;
+		string res;
+		int num = 0;
+		for (char c : s) {
+			if (isdigit(c)) {
+				num = num * 10 + (c - '0');
 			}
-			else if ('[' == c)
-			{
-				openCount++;
-				
-				if (base.size())
-				{
-					nstr.push(std::move(base));
-				}
+			else if (isalpha(c)) {
+				res.push_back(c);
 			}
-			else if (']' == c)
-			{
-				openCount--;
-
-				nstr.push(std::move(base));
-
-				int r = ns.top();
-				ns.pop();
-				int str = ns.top();
-				ns.pop();
-
-				for (int a = 0; a < r - 1; a++)
-				{
-					str += str;
-				}
-
-				base.insert(0, str);
-
-				if (openCount == 0)
-				{
-					ret += base;
-					base.clear();
-				}
+			else if (c == '[') {
+				chars.push(res);
+				nums.push(num);
+				res = "";
+				num = 0;
 			}
-			else
-			{
-				base += c;
+			else if (c == ']') {
+				string tmp = res;
+				for (int i = 0; i < nums.top() - 1; ++i) {
+					res += tmp;
+				}
+				res = chars.top() + res;
+				chars.pop(); nums.pop();
 			}
 		}
-
-
-		return ret;
-
+		return res;
 	}
 };
+
+//https://leetcode.com/problems/decode-string/solutions/2927099/easy-solution-short-simple-best-method-easy-to-understand/
+
